@@ -1,0 +1,471 @@
+{
+  "site": {
+    "title": "cosmopolíticas — rede de incidência política",
+    "description": "cosmopolíticas é uma rede viva de incidência política, com atuação crítica, decolonial e territorial. Conectamos movimentos, produzimos conhecimento estratégico e formamos pessoas.",
+    "footer_year_prefix": "cosmopolíticas — rede de incidência política decolonial",
+    "social": {
+      "instagram": "https://instagram.com/redecosmopoliticas",
+      "email": "contato@cosmopoliticas.org"
+    },
+    "form": {
+      "submit_endpoint": "https://formsubmit.co/contato@cosmopoliticas.org"
+    }
+  },
+  "navbar": {
+    "brand": "cosmopolíticas",
+    "logo": "assets/logo/Simbolo-Amarelo.png",
+    "links": [
+      {
+        "label": "quem somos",
+        "href": "#quem-somos"
+      },
+      {
+        "label": "o que fazemos",
+        "href": "#o-que-fazemos"
+      },
+      {
+        "label": "lutas",
+        "href": "#lutas"
+      },
+      {
+        "label": "galeria",
+        "href": "#galeria"
+      },
+      {
+        "label": "parceiros",
+        "href": "#parceiros"
+      },
+      {
+        "label": "contato",
+        "href": "#contato",
+        "cta": true
+      },
+      {
+        "label": "Campanhas",
+        "href": "campaigns.html",
+        "cta": true
+      }
+    ]
+  },
+  "hero": {
+    "logo": "assets/logo/Logo-Branco.png",
+    "headline": {
+      "prefix": "",
+      "word1": "outas formas",
+      "connector": " ",
+      "word2": "de fazer política"
+    },
+    "subtitle": "rede viva de incidência política, com atuação crítica, decolonial e territorial",
+    "cta_text": "conheça a rede",
+    "video": "assets/videos/Encerramento-Logo.mp4"
+  },
+  "quem_somos": {
+    "tag": "raiz · luz · terra",
+    "title": "quem somos",
+    "intro_paragraph": "Cosmopolíticas é mais do que uma consultoria: é uma rede viva de incidência política, com atuação crítica, decolonial e territorial.",
+    "details_paragraph": "Nosso papel é conectar movimentos, produzir conhecimento estratégico e formar pessoas para reconstruir a ideia de política como algo acessível, possível e transformador.",
+    "image": "assets/midias/grafismo tupinikim.jpeg",
+    "quote": {
+      "text": "Resgatar a esperança das pessoas de que é possível mudar as coisas, cenários de injustiça e violências. Quero que a Cosmopolíticas seja uma rede de apoio e fortalecimento dos coletivos que querem um mundo mais justo.",
+      "author": "Gabriela Sarmet"
+    },
+    "stories_title": "nossa história em imagens",
+    "stories": [
+      {
+        "src": "assets/stories/1-0.png",
+        "alt": "Cosmopolíticas Story 1"
+      },
+      {
+        "src": "assets/stories/1-1.png",
+        "alt": "Cosmopolíticas Story 2"
+      },
+      {
+        "src": "assets/stories/1-2.png",
+        "alt": "Cosmopolíticas Story 3"
+      },
+      {
+        "src": "assets/stories/1-3.png",
+        "alt": "Cosmopolíticas Story 4"
+      },
+      {
+        "src": "assets/stories/1-4.png",
+        "alt": "Cosmopolíticas Story 5"
+      },
+      {
+        "src": "assets/stories/1-5.png",
+        "alt": "Cosmopolíticas Story 6"
+      },
+      {
+        "src": "assets/stories/1-6.png",
+        "alt": "Cosmopolíticas Story 7"
+      },
+      {
+        "src": "assets/stories/1-7.png",
+        "alt": "Cosmopolíticas Story 8"
+      },
+      {
+        "src": "assets/stories/1-8.png",
+        "alt": "Cosmopolíticas Story 9"
+      },
+      {
+        "src": "assets/stories/1-9.png",
+        "alt": "Cosmopolíticas Story 10"
+      }
+    ],
+    "pillars": [
+      {
+        "name": "raiz",
+        "description": "memória coletiva que sustenta a resistência",
+        "color": "raiz",
+        "icon": "layers"
+      },
+      {
+        "name": "luz",
+        "description": "ferramenta de análise, crítica e direção",
+        "color": "luz",
+        "icon": "eye"
+      },
+      {
+        "name": "terra",
+        "description": "corpo, território e prática coletiva",
+        "color": "terra",
+        "icon": "people"
+      }
+    ]
+  },
+  "o_que_fazemos": {
+    "tag": "terra · corpo · território",
+    "title": "o que fazemos",
+    "services": [
+      {
+        "title": "assessoria política",
+        "description": "Terceiro Setor, prestação de serviços nacional e internacional. Aconselhamento estratégico para organizações e movimentos.",
+        "color": "terra",
+        "iconKey": "building"
+      },
+      {
+        "title": "advocacy & incidência",
+        "description": "Análise e produção de materiais para incidência política: policy briefs, notas técnicas, relatórios técnico-científicos e mais.",
+        "color": "raiz",
+        "iconKey": "document"
+      },
+      {
+        "title": "formação política",
+        "description": "Oficinas e debates sobre \"outras formas de se pensar e fazer política\", com exemplos de diversas partes do mundo e trocas entre participantes.",
+        "color": "luz",
+        "iconKey": "book"
+      },
+      {
+        "title": "rede de conexões",
+        "description": "Conectar iniciativas de incidência política radical desde os territórios: movimentos de luta pela terra no Brasil, na Palestina e em todo o mundo.",
+        "color": "dourado",
+        "iconKey": "network"
+      }
+    ]
+  },
+  "lutas": {
+    "tag": "luz · resistência · ação",
+    "title": "lutas & territórios",
+    "subtitle": "imagens das nossas ações e lutas em diferentes territórios",
+    "images": [
+      {
+        "src": "assets/feed/1-1.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "square"
+      },
+      {
+        "src": "assets/feed/1-3.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "portrait"
+      },
+      {
+        "src": "assets/feed/1-5.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "square"
+      },
+      {
+        "src": "assets/feed/1-8.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "portrait"
+      },
+      {
+        "src": "assets/feed/1-10.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "square"
+      },
+      {
+        "src": "assets/feed/1-12.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "portrait"
+      },
+      {
+        "src": "assets/feed/1-15.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "square"
+      },
+      {
+        "src": "assets/feed/1-16.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "portrait"
+      },
+      {
+        "src": "assets/feed/3-1.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "square"
+      },
+      {
+        "src": "assets/feed/3-6.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "portrait"
+      },
+      {
+        "src": "assets/feed/3-8.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "square"
+      },
+      {
+        "src": "assets/feed/6-0.png",
+        "alt": "Cosmopolíticas",
+        "aspect": "portrait"
+      }
+    ]
+  },
+  "galeria": {
+    "tag": "memória · registro · história",
+    "title": "galeria de mídia",
+    "videos": [
+      {
+        "src": "assets/videos/PUC ES.mp4",
+        "poster": "assets/feed/CarrosselFluido_01.png",
+        "title": "PUC ES",
+        "description": "Evento na universidade"
+      },
+      {
+        "src": "assets/videos/IMG_2730.MP4",
+        "poster": "assets/feed/CarrosselFluido_02.png",
+        "title": "Território",
+        "description": "Registro em campo"
+      },
+      {
+        "src": "assets/videos/IMG_2740.MP4",
+        "poster": "assets/feed/CarrosselFluido_04.png",
+        "title": "Comunidade",
+        "description": "Encontro com povos originários"
+      }
+    ],
+    "abolition_day": {
+      "title": "Abolition Day",
+      "subtitle": "Dia da Abolição da Energia Nuclear",
+      "images": [
+        {
+          "src": "assets/stories/1.png",
+          "alt": "Abolition Day 1"
+        },
+        {
+          "src": "assets/stories/4.png",
+          "alt": "Abolition Day 2"
+        },
+        {
+          "src": "assets/stories/3-Capa.png",
+          "alt": "Abolition Day 3"
+        },
+        {
+          "src": "assets/stories/5.png",
+          "alt": "Abolition Day 4"
+        }
+      ]
+    }
+  },
+  "parceiros": {
+    "tag": "conexões · rede · solidariedade",
+    "title": "parceiros",
+    "posts": [
+      {
+        "src": "assets/parceiros/Parceiros-Post-1.png",
+        "alt": "Parceiro 1"
+      },
+      {
+        "src": "assets/parceiros/Parceiros-Post-2.png",
+        "alt": "Parceiro 2"
+      },
+      {
+        "src": "assets/parceiros/Parceiros-Post-3.png",
+        "alt": "Parceiro 3"
+      },
+      {
+        "src": "assets/parceiros/Parceiros-Post-4.png",
+        "alt": "Parceiro 4"
+      }
+    ],
+    "stories": [
+      {
+        "src": "assets/parceiros/Parceiros-Story-1.png",
+        "alt": "Parceiro Story 1"
+      },
+      {
+        "src": "assets/parceiros/Parceiros-Story-2.png",
+        "alt": "Parceiro Story 2"
+      },
+      {
+        "src": "assets/parceiros/Parceiros-Story-3.png",
+        "alt": "Parceiro Story 3"
+      },
+      {
+        "src": "assets/parceiros/Parceiros-Story-4.png",
+        "alt": "Parceiro Story 4"
+      }
+    ]
+  },
+  "contato": {
+    "tag": "faça parte da rede",
+    "title": "contato",
+    "subtitle": "quer se conectar conosco? escreva!",
+    "form": {
+      "labels": {
+        "name": "nome",
+        "email": "email",
+        "subject": "assunto",
+        "message": "mensagem"
+      },
+      "placeholders": {
+        "name": "seu nome",
+        "email": "seu@email.com",
+        "subject": "sobre o que quer falar?",
+        "message": "sua mensagem..."
+      },
+      "submit_button": "enviar mensagem"
+    },
+    "success": {
+      "title": "mensagem enviada!",
+      "subtitle": "vamos responder em breve."
+    },
+    "social_label": "nos siga"
+  },
+  "campaigns": {
+    "page_title": "Cosmopolíticas — Campanhas",
+    "nav_label": "cosmopolíticas",
+    "nav_title": "campanhas",
+    "nav_links": [
+      {
+        "label": "campanha",
+        "href": "#campanha"
+      },
+      {
+        "label": "minuta",
+        "href": "#minuta"
+      },
+      {
+        "label": "deputados",
+        "href": "#deputados"
+      }
+    ],
+    "hero_tag": "mobilização pública",
+    "hero_title": "Programa Nacional de Proteção Permanente de Rios",
+    "hero_description": "A proposta em nível nacional será incluída na pauta da reunião deliberativa da CMADS nesta quarta-feira. É fundamental que organizações da sociedade civil pressionem os membros da comissão para votarem a favor do relatório da Deputada Duda.",
+    "message_label": "texto-base da ação",
+    "message_paragraphs": [
+      "Programa Nacional de Proteção Permanente de Rios, em nível nacional, será incluído na pauta da reunião deliberativa da CMADS, agora nesta quarta-feira.",
+      "Por isso, será muito importante que as organizações da sociedade civil manifestem seu apoio a este Parecer e PL e enviem emails para os membros da CMADS, para que votem a FAVOR do Relatório da Deputada Duda."
+    ],
+    "action_label": "ação sugerida",
+    "action_steps": [
+      {
+        "number": "1.",
+        "text": "Leia a campanha e adapte a minuta."
+      },
+      {
+        "number": "2.",
+        "text": "Copie os emails dos titulares ou envie individualmente."
+      },
+      {
+        "number": "3.",
+        "text": "Pressione pela votação favorável ao relatório."
+      }
+    ],
+    "template_label": "minuta sugerida",
+    "template_title": "Espaço para minuta de email",
+    "template_text": "Minuta de texto para o email a ser enviado para os deputados membros da CMADS. (fiquem à vontade para ajustar o texto).\n\nPrezada Deputada ou Prezado Deputado???. (inserir o nome),\n\nEm nome da (colocar aqui a entidade que você está vinculado ou representa), vimos encarecidamente solicitar a V. Sa. para votar a FAVOR do Relatório/Voto/Substitutivo - PRL 01, que trata do Projeto de Lei 2842/24, que institui o Programa Nacional de Proteção Permanente de Rios. Este Relatório foi protocolado pela relatora, Deputada Duda Salabert, no dia 06 de junho deste ano.\n\nComo é do conhecimento da sociedade, o maior desafio a ser enfrentado pela humanidade é a crise climática global atual. No Brasil esta crise afeta diretamente todos os setores da sociedade e da economia.\n\nÉ pelas águas e no fluxo dos rios que esta crise se manifesta da maneira mais drástica, seja pelos períodos de secas cada vez mais frequentes e prolongadas, seja na época das chuvas, cada vez mais curtas, porém mais intensas, provocando enchentes, inundações e desmoronamento.\n\nEsses eventos climáticos extremos têm resultado em grandes prejuízos para os setores como o da agropecuária, da indústria, da mineração e, o que é o mais grave, a perdas de inúmeras vidas humanas. Basta lembrar a tragedia que ocorreu no Rio Grande do Sul.\n\nEsta tragedia atingiu 478 dos 497 municípios do Estado, afetando cerca de 2,4 milhões de pessoas. As estimativas apontam para um prejuízo econômico de R$ 40,0 bilhões, o que ocasionou uma queda de 6,25% na produção gaúcha de 2024. Este desastre provocou a morte de 185 pessoas e de 23 desaparecidos, o que não tem valor que possa ser mensurado ou que se justifique!\n\nA verdade é que o maior responsável pelo acirramento da crise climática e dos recentes desastres socioambientais somos nós mesmos. Essas e outras tragédias continuarão acontecendo se nós não mudarmos o nosso modo de se relacionar com a natureza, em particular, com os nossos rios.\n\nÉ justamente isto que o PL 2842/24 propõe. Contribuir para o estabelecimento de regras mais eficazes, que permitam equilibrar as demandas pelo desenvolvimento econômico com as necessidades de conservação e preservação da natureza e de nossos rios. Não podemos continuar tratando nossos rios como se fossem apenas um recurso natural a ser explorado até sua exaustão. Senão, qual o futuro que estamos destinando e oferecendo aos nossos filhos e netos?\n\nPor isso, fazemos este apelo tão importante, para que todas deputadas e deputados, membros da Comissão de Meio Ambiente e Desenvolvimento Sustentável, votem a FAVOR do Relatório da Deputada Duda.\n\n(Colocar aqui o seu nome e/ou a entidade/organização/instituição que representa).",
+    "deputies_section": {
+      "label": "titulares da CMADS",
+      "title": "Emails dos deputados",
+      "description": "Lista pronta para mobilização. Você pode copiar todos os emails de uma vez ou abrir o cliente de email para disparo manual.",
+      "deputies": [
+        {
+          "name": "BRUNO AREVALO GANEM",
+          "party": "PODE - SP",
+          "email": "dep.brunoganem@camara.leg.br"
+        },
+        {
+          "name": "ANTONIO CARLOS GOMES DA SILVA",
+          "party": "REPUBLICANOS - RS",
+          "email": "dep.carlosgomes@camara.leg.br"
+        },
+        {
+          "name": "VALDIR VITAL COBALCHINI",
+          "party": "MDB - SC",
+          "email": "dep.cobalchini@camara.leg.br"
+        },
+        {
+          "name": "CELIO STUDART BARBOSA",
+          "party": "PSD - CE",
+          "email": "dep.celiostudart@camara.leg.br"
+        },
+        {
+          "name": "MATHEUS ARAUJO LAIOLA",
+          "party": "UNIÃO - PR",
+          "email": "dep.delegadomatheuslaiola@camara.leg.br"
+        },
+        {
+          "name": "DILVANDA FURTADO FARO",
+          "party": "PT - PA | Federação PT-PCdoB-PV",
+          "email": "dep.dilvandafaro@camara.leg.br"
+        },
+        {
+          "name": "DUDA BRITO RAMOS",
+          "party": "PODE - RR",
+          "email": "dep.dudaramos@camara.leg.br"
+        },
+        {
+          "name": "FREDERICO BORGES DA COSTA",
+          "party": "PRD - MG",
+          "email": "dep.fredcosta@camara.leg.br"
+        },
+        {
+          "name": "NILTO IGNACIO TATTO",
+          "party": "PT - SP | Federação PT-PCdoB-PV",
+          "email": "dep.niltotatto@camara.leg.br"
+        },
+        {
+          "name": "RAFAEL PEZENTI",
+          "party": "MDB - SC",
+          "email": "dep.pezenti@camara.leg.br"
+        },
+        {
+          "name": "MARIA DO SOCORRO NERI MEDEIROS DE SOUZA",
+          "party": "PP - AC",
+          "email": "dep.socorroneri@camara.leg.br"
+        },
+        {
+          "name": "TABATA CLAUDIA AMARAL DE PONTES",
+          "party": "PSB - SP",
+          "email": "dep.tabataamaral@camara.leg.br"
+        },
+        {
+          "name": "SEBASTIÃO HENRIQUE DE MEDEIROS",
+          "party": "PP - PR",
+          "email": "dep.tiaomedeiros@camara.leg.br"
+        },
+        {
+          "name": "JOSÉ SILVA SOARES",
+          "party": "UNIÃO - MG",
+          "email": "dep.zesilva@camara.leg.br"
+        },
+        {
+          "name": "JOSE VITOR DE RESENDE AGUIAR",
+          "party": "PL - MG",
+          "email": "dep.zevitor@camara.leg.br"
+        }
+      ]
+    }
+  }
+}

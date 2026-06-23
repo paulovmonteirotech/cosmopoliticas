@@ -6,7 +6,6 @@
   <title>cosmopolíticas — rede de incidência política</title>
   <meta name="description" content="cosmopolíticas é uma rede viva de incidência política, com atuação crítica, decolonial e territorial. Conectamos movimentos, produzimos conhecimento estratégico e formamos pessoas.">
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -22,8 +21,8 @@
             profundo: '#1F0032',
           },
           fontFamily: {
-            display: ['"Playfair Display"', 'serif'],
-            body: ['"Space Grotesk"', 'sans-serif'],
+            display: ['"Blakest"', 'serif'],
+            body: ['"Noka"', 'sans-serif'],
           },
           animation: {
             'float': 'float 6s ease-in-out infinite',
@@ -46,32 +45,23 @@
     }
   </script>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logo/Simbolo-Branco.png">
+  <script src="js/content-loader.js" defer></script>
 </head>
 <body class="bg-profundo font-body text-areia overflow-x-hidden">
 
-  <!-- Custom Cursor -->
   <div id="cursor" class="cursor-dot fixed w-4 h-4 rounded-full bg-luz pointer-events-none z-[9999] mix-blend-difference hidden lg:block"></div>
   <div id="cursor-ring" class="cursor-ring fixed w-10 h-10 rounded-full border-2 border-dourado pointer-events-none z-[9998] opacity-50 hidden lg:block"></div>
 
-  <!-- ==================== NAVBAR ==================== -->
   <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <a href="#hero" class="flex items-center gap-2">
-        <img src="assets/logo/Simbolo-Branco.png" alt="cosmopolíticas" class="h-8 w-auto">
-        <span class="font-display text-xl text-white tracking-wide hidden sm:block">cosmopolíticas</span>
+        <img data-content-img="navbar.logo" src="assets/logo/Simbolo-Branco.png" alt="cosmopolíticas" class="h-8 w-auto">
+        <span data-content="navbar.brand" class="font-display text-xl text-white tracking-wide hidden sm:block">cosmopolíticas</span>
       </a>
 
-      <div class="hidden md:flex items-center gap-8">
+      <div id="navbar-links" class="hidden md:flex items-center gap-8">
         <a href="#quem-somos" class="nav-link text-areia/80 hover:text-luz transition-colors text-sm uppercase tracking-widest">quem somos</a>
         <a href="#o-que-fazemos" class="nav-link text-areia/80 hover:text-luz transition-colors text-sm uppercase tracking-widest">o que fazemos</a>
         <a href="#lutas" class="nav-link text-areia/80 hover:text-luz transition-colors text-sm uppercase tracking-widest">lutas</a>
@@ -80,7 +70,7 @@
         <a href="#contato" class="nav-link bg-terra hover:bg-terra/80 text-white px-5 py-2 rounded-full transition-all text-sm uppercase tracking-widest">contato</a>
       </div>
 
-      <button id="menu-btn" class="md:hidden text-white flex flex-col gap-1.5 z-50 relative">
+      <button id="menu-btn" class="md:hidden text-white flex flex-col gap-1.5 z-50 relative" aria-label="Abrir menu">
         <span class="menu-line w-7 h-0.5 bg-white transition-all"></span>
         <span class="menu-line w-5 h-0.5 bg-white transition-all ml-auto"></span>
         <span class="menu-line w-7 h-0.5 bg-white transition-all"></span>
@@ -88,7 +78,7 @@
     </div>
 
     <div id="mobile-menu" class="fixed inset-0 bg-profundo/98 backdrop-blur-lg flex items-center justify-center z-40 translate-x-full transition-transform duration-500">
-      <div class="flex flex-col items-center gap-8">
+      <div id="mobile-menu-links" class="flex flex-col items-center gap-8">
         <a href="#quem-somos" class="mobile-link text-3xl font-display text-areia hover:text-luz transition-colors">quem somos</a>
         <a href="#o-que-fazemos" class="mobile-link text-3xl font-display text-areia hover:text-luz transition-colors">o que fazemos</a>
         <a href="#lutas" class="mobile-link text-3xl font-display text-areia hover:text-luz transition-colors">lutas</a>
@@ -99,11 +89,10 @@
     </div>
   </nav>
 
-  <!-- ==================== HERO ==================== -->
   <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
     <div class="hero-video absolute inset-0">
-      <video autoplay muted loop playsinline class="w-full h-full object-cover">
-        <source src="assets/videos/Encerramento-Logo.mp4" type="video/mp4">
+      <video id="hero-video" autoplay muted loop playsinline class="w-full h-full object-cover">
+        <source id="hero-video-source" src="assets/videos/Encerramento-Logo.mp4" type="video/mp4">
       </video>
       <div class="absolute inset-0 bg-gradient-to-b from-profundo/70 via-profundo/50 to-profundo"></div>
     </div>
@@ -130,18 +119,18 @@
     <div id="particles" class="absolute inset-0"></div>
 
     <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
-      <img src="assets/logo/Logo-Branco.png" alt="cosmopolíticas" class="hero-logo w-48 sm:w-64 md:w-80 mx-auto mb-8 animate-float opacity-0">
+      <img data-content-img="hero.logo" src="assets/logo/Logo-Branco.png" alt="cosmopolíticas" class="hero-logo w-48 sm:w-64 md:w-80 mx-auto mb-8 animate-float opacity-0">
 
-      <h1 class="hero-title font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-tight mb-6 opacity-0">
+      <h1 data-content-html="hero.headline" class="hero-title font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-tight mb-6 opacity-0">
         o <span class="text-luz italic">cosmo</span> é a <span class="text-terra italic">política</span>
       </h1>
 
-      <p class="hero-subtitle text-areia/80 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto mb-10 font-light leading-relaxed opacity-0">
+      <p data-content="hero.subtitle" class="hero-subtitle text-areia/80 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto mb-10 font-light leading-relaxed opacity-0">
         rede viva de incidência política, com atuação crítica, decolonial e territorial
       </p>
 
       <a href="#quem-somos" class="hero-cta inline-flex items-center gap-3 bg-terra hover:bg-terra/80 text-white px-8 py-4 rounded-full transition-all text-lg uppercase tracking-widest opacity-0 group">
-        conheça a rede
+        <span id="hero-cta-text">conheça a rede</span>
         <svg class="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
         </svg>
@@ -155,7 +144,6 @@
     </div>
   </section>
 
-  <!-- SECTION DIVIDER -->
   <div class="relative h-24 bg-profundo flex items-center justify-center overflow-hidden">
     <svg class="w-full max-w-4xl mx-auto" viewBox="0 0 600 40" fill="none">
       <path d="M0 20 Q150 0 300 20 Q450 40 600 20" stroke="#9C271E" stroke-width="2" fill="none" stroke-dasharray="4 8"/>
@@ -165,7 +153,6 @@
     </svg>
   </div>
 
-  <!-- ==================== QUEM SOMOS ==================== -->
   <section id="quem-somos" class="relative py-24 md:py-32 overflow-hidden">
     <div class="absolute inset-0 opacity-5">
       <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -178,48 +165,27 @@
 
     <div class="max-w-7xl mx-auto px-6 relative z-10">
       <div class="text-center mb-16 reveal">
-        <span class="text-luz text-sm uppercase tracking-[0.3em] font-semibold">raiz · luz · terra</span>
-        <h2 class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">quem somos</h2>
+        <span data-content="quem_somos.tag" class="text-luz text-sm uppercase tracking-[0.3em] font-semibold">raiz · luz · terra</span>
+        <h2 data-content="quem_somos.title" class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">quem somos</h2>
         <div class="w-20 h-1 bg-terra mx-auto mt-4 rounded-full"></div>
       </div>
 
       <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <div class="reveal-left">
-          <p class="text-areia/90 text-lg md:text-xl leading-relaxed mb-6">
-            <span class="text-luz font-display text-3xl float-left mr-2">C</span>osmopolíticas é mais do que uma consultoria: é uma <strong class="text-white">rede viva de incidência política</strong>, com atuação crítica, decolonial e territorial.
+          <p data-content="quem_somos.intro_paragraph" class="text-areia/90 text-lg md:text-xl leading-relaxed mb-6">
+            Cosmopolíticas é mais do que uma consultoria: é uma rede viva de incidência política, com atuação crítica, decolonial e territorial.
           </p>
-          <p class="text-areia/70 text-base md:text-lg leading-relaxed mb-6">
+          <p data-content="quem_somos.details_paragraph" class="text-areia/70 text-base md:text-lg leading-relaxed mb-6">
             Nosso papel é conectar movimentos, produzir conhecimento estratégico e formar pessoas para reconstruir a ideia de política como algo acessível, possível e transformador.
           </p>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10">
-            <div class="bg-profundo/50 border border-areia/10 rounded-2xl p-6 text-center hover:border-luz/30 transition-all group">
-              <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-raiz/20 flex items-center justify-center group-hover:bg-raiz/40 transition-all">
-                <svg class="w-6 h-6 text-raiz" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.18L17.5 8 12 11.82 6.5 8 12 4.18z"/></svg>
-              </div>
-              <h3 class="text-raiz font-display text-xl mb-1">raiz</h3>
-              <p class="text-areia/60 text-sm">memória coletiva que sustenta a resistência</p>
-            </div>
-            <div class="bg-profundo/50 border border-areia/10 rounded-2xl p-6 text-center hover:border-luz/30 transition-all group">
-              <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-luz/20 flex items-center justify-center group-hover:bg-luz/40 transition-all">
-                <svg class="w-6 h-6 text-luz" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a3 3 0 110 6 3 3 0 010-6zm0 14.2a7.2 7.2 0 01-6-3.22c.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08a7.2 7.2 0 01-6 3.22z"/></svg>
-              </div>
-              <h3 class="text-luz font-display text-xl mb-1">luz</h3>
-              <p class="text-areia/60 text-sm">ferramenta de análise, crítica e direção</p>
-            </div>
-            <div class="bg-profundo/50 border border-areia/10 rounded-2xl p-6 text-center hover:border-terra/30 transition-all group">
-              <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-terra/20 flex items-center justify-center group-hover:bg-terra/40 transition-all">
-                <svg class="w-6 h-6 text-terra" fill="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h2v-2a2 2 0 012-2h8a2 2 0 012 2v2h2zm-4-6a6 6 0 100-12 6 6 0 000 12zm6 6v-2a4 4 0 00-3-3.87A6.01 6.01 0 0115 11a6 6 0 016 6 4 4 0 002 3.87V21h-4z"/></svg>
-              </div>
-              <h3 class="text-terra font-display text-xl mb-1">terra</h3>
-              <p class="text-areia/60 text-sm">corpo, território e prática coletiva</p>
-            </div>
+          <div id="pillars-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10">
           </div>
         </div>
 
         <div class="reveal-right relative">
           <div class="relative rounded-3xl overflow-hidden border-2 border-areia/10">
-            <img src="assets/midias/grafismo tupinikim.jpeg" alt="Grafismo Tupinikim" class="w-full h-auto object-cover rounded-3xl" loading="lazy">
+            <img data-content-img="quem_somos.image" src="assets/midias/grafismo tupinikim.jpeg" alt="Grafismo Tupinikim" class="w-full h-auto object-cover rounded-3xl" loading="lazy">
             <div class="absolute inset-0 bg-gradient-to-t from-profundo/60 to-transparent"></div>
           </div>
           <div class="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-luz/10 animate-float-slow"></div>
@@ -229,31 +195,19 @@
 
       <div class="reveal mt-20 max-w-4xl mx-auto text-center bg-gradient-to-r from-profundo via-roxo/20 to-profundo rounded-3xl p-8 md:p-12 border border-areia/5">
         <svg class="w-10 h-10 text-luz/30 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-        <p class="text-areia/90 text-xl md:text-2xl font-display italic leading-relaxed mb-4">
+        <p id="quote-text" class="text-areia/90 text-xl md:text-2xl font-display italic leading-relaxed mb-4">
           "Resgatar a esperança das pessoas de que é possível mudar as coisas, cenários de injustiça e violências. Quero que a Cosmopolíticas seja uma rede de apoio e fortalecimento dos coletivos que querem um mundo mais justo."
         </p>
-        <span class="text-luz text-sm uppercase tracking-widest">— Gabriela Sarmet</span>
+        <span id="quote-author" class="text-luz text-sm uppercase tracking-widest">— Gabriela Sarmet</span>
       </div>
 
       <div class="reveal mt-20">
-        <h3 class="text-center text-white font-display text-2xl mb-8">nossa história em imagens</h3>
-        <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide" id="stories-carousel">
-          <img src="assets/stories/1-0.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-          <img src="assets/stories/1-1.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-          <img src="assets/stories/1-2.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-          <img src="assets/stories/1-3.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-          <img src="assets/stories/1-4.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-          <img src="assets/stories/1-5.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-          <img src="assets/stories/1-6.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-          <img src="assets/stories/1-7.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-          <img src="assets/stories/1-8.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-          <img src="assets/stories/1-9.png" alt="Cosmopolíticas Story" class="snap-center flex-shrink-0 w-64 h-[500px] rounded-2xl object-cover border-2 border-areia/10 hover:border-luz/30 transition-all" loading="lazy">
-        </div>
+        <h3 data-content="quem_somos.stories_title" class="text-center text-white font-display text-2xl mb-8">nossa história em imagens</h3>
+        <div id="stories-carousel" class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"></div>
       </div>
     </div>
   </section>
 
-  <!-- SECTION DIVIDER -->
   <div class="relative h-24 bg-profundo flex items-center justify-center overflow-hidden">
     <svg class="w-full max-w-4xl mx-auto" viewBox="0 0 600 40" fill="none">
       <path d="M0 20 Q200 40 400 20 Q500 5 600 20" stroke="#F39227" stroke-width="2" fill="none" stroke-dasharray="4 8"/>
@@ -261,66 +215,20 @@
     </svg>
   </div>
 
-  <!-- ==================== O QUE FAZEMOS ==================== -->
   <section id="o-que-fazemos" class="relative py-24 md:py-32 overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-b from-profundo via-roxo/5 to-profundo"></div>
 
     <div class="max-w-7xl mx-auto px-6 relative z-10">
       <div class="text-center mb-16 reveal">
-        <span class="text-terra text-sm uppercase tracking-[0.3em] font-semibold">terra · corpo · território</span>
-        <h2 class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">o que fazemos</h2>
+        <span data-content="o_que_fazemos.tag" class="text-terra text-sm uppercase tracking-[0.3em] font-semibold">terra · corpo · território</span>
+        <h2 data-content="o_que_fazemos.title" class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">o que fazemos</h2>
         <div class="w-20 h-1 bg-luz mx-auto mt-4 rounded-full"></div>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
-        <div class="reveal-up service-card group relative bg-gradient-to-br from-profundo to-roxo/20 rounded-3xl p-8 md:p-10 border border-areia/5 hover:border-terra/30 transition-all duration-500 overflow-hidden">
-          <div class="absolute top-0 right-0 w-40 h-40 bg-terra/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
-          <div class="relative z-10">
-            <div class="w-16 h-16 rounded-2xl bg-terra/10 flex items-center justify-center mb-6 group-hover:bg-terra/20 transition-all">
-              <svg class="w-8 h-8 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-            </div>
-            <h3 class="font-display text-2xl md:text-3xl text-white mb-3">assessoria política</h3>
-            <p class="text-areia/70 leading-relaxed">Terceiro Setor, prestação de serviços nacional e internacional. Aconselhamento estratégico para organizações e movimentos.</p>
-          </div>
-        </div>
-
-        <div class="reveal-up service-card group relative bg-gradient-to-br from-profundo to-raiz/20 rounded-3xl p-8 md:p-10 border border-areia/5 hover:border-raiz/30 transition-all duration-500 overflow-hidden">
-          <div class="absolute top-0 right-0 w-40 h-40 bg-raiz/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
-          <div class="relative z-10">
-            <div class="w-16 h-16 rounded-2xl bg-raiz/10 flex items-center justify-center mb-6 group-hover:bg-raiz/20 transition-all">
-              <svg class="w-8 h-8 text-raiz" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            </div>
-            <h3 class="font-display text-2xl md:text-3xl text-white mb-3">advocacy &amp; incidência</h3>
-            <p class="text-areia/70 leading-relaxed">Análise e produção de materiais para incidência política: policy briefs, notas técnicas, relatórios técnico-científicos e mais.</p>
-          </div>
-        </div>
-
-        <div class="reveal-up service-card group relative bg-gradient-to-br from-profundo to-luz/10 rounded-3xl p-8 md:p-10 border border-areia/5 hover:border-luz/30 transition-all duration-500 overflow-hidden">
-          <div class="absolute top-0 right-0 w-40 h-40 bg-luz/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
-          <div class="relative z-10">
-            <div class="w-16 h-16 rounded-2xl bg-luz/10 flex items-center justify-center mb-6 group-hover:bg-luz/20 transition-all">
-              <svg class="w-8 h-8 text-luz" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-            </div>
-            <h3 class="font-display text-2xl md:text-3xl text-white mb-3">formação política</h3>
-            <p class="text-areia/70 leading-relaxed">Oficinas e debates sobre "outras formas de se pensar e fazer política", com exemplos de diversas partes do mundo e trocas entre participantes.</p>
-          </div>
-        </div>
-
-        <div class="reveal-up service-card group relative bg-gradient-to-br from-profundo to-dourado/10 rounded-3xl p-8 md:p-10 border border-areia/5 hover:border-dourado/30 transition-all duration-500 overflow-hidden">
-          <div class="absolute top-0 right-0 w-40 h-40 bg-dourado/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
-          <div class="relative z-10">
-            <div class="w-16 h-16 rounded-2xl bg-dourado/10 flex items-center justify-center mb-6 group-hover:bg-dourado/20 transition-all">
-              <svg class="w-8 h-8 text-dourado" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-            </div>
-            <h3 class="font-display text-2xl md:text-3xl text-white mb-3">rede de conexões</h3>
-            <p class="text-areia/70 leading-relaxed">Conectar iniciativas de incidência política radical desde os territórios: movimentos de luta pela terra no Brasil, na Palestina e em todo o mundo.</p>
-          </div>
-        </div>
-      </div>
+      <div id="services-grid" class="grid md:grid-cols-2 gap-6 lg:gap-8"></div>
     </div>
   </section>
 
-  <!-- SECTION DIVIDER -->
   <div class="relative h-24 bg-profundo flex items-center justify-center overflow-hidden">
     <svg class="w-full max-w-4xl mx-auto" viewBox="0 0 600 40" fill="none">
       <path d="M0 20 Q100 0 200 20 Q300 40 400 20 Q500 0 600 20" stroke="#294902" stroke-width="2" fill="none" stroke-dasharray="4 8"/>
@@ -328,169 +236,39 @@
     </svg>
   </div>
 
-  <!-- ==================== LUTAS & TERRITÓRIOS ==================== -->
   <section id="lutas" class="relative py-24 md:py-32 overflow-hidden">
     <div class="max-w-7xl mx-auto px-6 relative z-10">
       <div class="text-center mb-16 reveal">
-        <span class="text-raiz text-sm uppercase tracking-[0.3em] font-semibold">luz · resistência · ação</span>
-        <h2 class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">lutas &amp; territórios</h2>
+        <span data-content="lutas.tag" class="text-raiz text-sm uppercase tracking-[0.3em] font-semibold">luz · resistência · ação</span>
+        <h2 data-content="lutas.title" class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">lutas &amp; territórios</h2>
         <div class="w-20 h-1 bg-raiz mx-auto mt-4 rounded-full"></div>
-        <p class="text-areia/60 mt-6 max-w-2xl mx-auto text-lg">imagens das nossas ações e lutas em diferentes territórios</p>
+        <p data-content="lutas.subtitle" class="text-areia/60 mt-6 max-w-2xl mx-auto text-lg">imagens das nossas ações e lutas em diferentes territórios</p>
       </div>
 
-      <div class="reveal-up grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4" id="lutas-gallery">
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightbox(0, event)">
-          <img src="assets/feed/1-1.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-[3/4]" onclick="openLightbox(1, event)">
-          <img src="assets/feed/1-3.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightbox(2, event)">
-          <img src="assets/feed/1-5.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-[3/4]" onclick="openLightbox(3, event)">
-          <img src="assets/feed/1-8.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightbox(4, event)">
-          <img src="assets/feed/1-10.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-[3/4]" onclick="openLightbox(5, event)">
-          <img src="assets/feed/1-12.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightbox(6, event)">
-          <img src="assets/feed/1-15.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-[3/4]" onclick="openLightbox(7, event)">
-          <img src="assets/feed/1-16.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightbox(8, event)">
-          <img src="assets/feed/3-1.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-[3/4]" onclick="openLightbox(9, event)">
-          <img src="assets/feed/3-6.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightbox(10, event)">
-          <img src="assets/feed/3-8.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer aspect-[3/4]" onclick="openLightbox(11, event)">
-          <img src="assets/feed/6-0.png" alt="Cosmopolíticas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-profundo/0 group-hover:bg-profundo/40 transition-all duration-300 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-      </div>
+      <div id="lutas-gallery" class="reveal-up grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4"></div>
     </div>
   </section>
 
-  <!-- ==================== GALERIA DE MÍDIA ==================== -->
   <section id="galeria" class="relative py-24 md:py-32 overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-b from-profundo via-terra/5 to-profundo"></div>
 
     <div class="max-w-7xl mx-auto px-6 relative z-10">
       <div class="text-center mb-16 reveal">
-        <span class="text-dourado text-sm uppercase tracking-[0.3em] font-semibold">memória · registro · história</span>
-        <h2 class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">galeria de mídia</h2>
+        <span data-content="galeria.tag" class="text-dourado text-sm uppercase tracking-[0.3em] font-semibold">memória · registro · história</span>
+        <h2 data-content="galeria.title" class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">galeria de mídia</h2>
         <div class="w-20 h-1 bg-dourado mx-auto mt-4 rounded-full"></div>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="reveal-up video-card group relative rounded-2xl overflow-hidden cursor-pointer aspect-video" onclick="openVideoModal('assets/videos/PUC ES.mp4')">
-          <img src="assets/feed/CarrosselFluido_01.png" alt="PUC ES" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-gradient-to-t from-profundo/90 via-profundo/30 to-profundo/20 group-hover:from-profundo/70 group-hover:via-profundo/20 transition-all duration-500 flex items-center justify-center">
-            <div class="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 group-hover:scale-110 transition-all border-2 border-white/20">
-              <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-profundo to-transparent">
-            <p class="text-white font-display text-xl">PUC ES</p>
-            <p class="text-areia/70 text-sm">Evento na universidade</p>
-          </div>
-        </div>
+      <div id="videos-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-        <div class="reveal-up video-card group relative rounded-2xl overflow-hidden cursor-pointer aspect-video" onclick="openVideoModal('assets/videos/IMG_2730.MP4')">
-          <img src="assets/feed/CarrosselFluido_02.png" alt="Território" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-gradient-to-t from-profundo/90 via-profundo/30 to-profundo/20 group-hover:from-profundo/70 group-hover:via-profundo/20 transition-all duration-500 flex items-center justify-center">
-            <div class="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 group-hover:scale-110 transition-all border-2 border-white/20">
-              <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-profundo to-transparent">
-            <p class="text-white font-display text-xl">Território</p>
-            <p class="text-areia/70 text-sm">Registro em campo</p>
-          </div>
-        </div>
-
-        <div class="reveal-up video-card group relative rounded-2xl overflow-hidden cursor-pointer aspect-video" onclick="openVideoModal('assets/videos/IMG_2740.MP4')">
-          <img src="assets/feed/CarrosselFluido_04.png" alt="Comunidade" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-gradient-to-t from-profundo/90 via-profundo/30 to-profundo/20 group-hover:from-profundo/70 group-hover:via-profundo/20 transition-all duration-500 flex items-center justify-center">
-            <div class="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 group-hover:scale-110 transition-all border-2 border-white/20">
-              <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-profundo to-transparent">
-            <p class="text-white font-display text-xl">Comunidade</p>
-            <p class="text-areia/70 text-sm">Encontro com povos originários</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Abolition Day -->
       <div class="mt-20 reveal">
-        <h3 class="text-center text-white font-display text-3xl mb-2">Abolition Day</h3>
-        <p class="text-center text-areia/60 mb-10">Dia da Abolição da Energia Nuclear</p>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="group relative rounded-2xl overflow-hidden aspect-[9/16]">
-            <img src="assets/stories/1.png" alt="Abolition Day" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
-          </div>
-          <div class="group relative rounded-2xl overflow-hidden aspect-[9/16]">
-            <img src="assets/stories/4.png" alt="Abolition Day" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
-          </div>
-          <div class="group relative rounded-2xl overflow-hidden aspect-[9/16]">
-            <img src="assets/stories/3-Capa.png" alt="Abolition Day" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
-          </div>
-          <div class="group relative rounded-2xl overflow-hidden aspect-[9/16]">
-            <img src="assets/stories/5.png" alt="Abolition Day" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
-          </div>
-        </div>
+        <h3 id="abolition-title" class="text-center text-white font-display text-3xl mb-2">Abolition Day</h3>
+        <p id="abolition-subtitle" class="text-center text-areia/60 mb-10">Dia da Abolição da Energia Nuclear</p>
+        <div id="abolition-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
       </div>
     </div>
   </section>
 
-  <!-- SECTION DIVIDER -->
   <div class="relative h-24 bg-profundo flex items-center justify-center overflow-hidden">
     <svg class="w-full max-w-4xl mx-auto" viewBox="0 0 600 40" fill="none">
       <path d="M0 20 Q300 0 600 20" stroke="#C4AA3C" stroke-width="2" fill="none" stroke-dasharray="4 8"/>
@@ -498,44 +276,19 @@
     </svg>
   </div>
 
-  <!-- ==================== PARCEIROS ==================== -->
   <section id="parceiros" class="relative py-24 md:py-32 overflow-hidden">
     <div class="max-w-7xl mx-auto px-6 relative z-10">
       <div class="text-center mb-16 reveal">
-        <span class="text-dourado text-sm uppercase tracking-[0.3em] font-semibold">conexões · rede · solidariedade</span>
-        <h2 class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">parceiros</h2>
+        <span data-content="parceiros.tag" class="text-dourado text-sm uppercase tracking-[0.3em] font-semibold">conexões · rede · solidariedade</span>
+        <h2 data-content="parceiros.title" class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">parceiros</h2>
         <div class="w-20 h-1 bg-dourado mx-auto mt-4 rounded-full"></div>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        <div class="reveal-up group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightboxPartner(0, event)">
-          <img src="assets/parceiros/Parceiros-Post-1.png" alt="Parceiro" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-gradient-to-t from-profundo/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        </div>
-        <div class="reveal-up group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightboxPartner(1, event)">
-          <img src="assets/parceiros/Parceiros-Post-2.png" alt="Parceiro" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-gradient-to-t from-profundo/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        </div>
-        <div class="reveal-up group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightboxPartner(2, event)">
-          <img src="assets/parceiros/Parceiros-Post-3.png" alt="Parceiro" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-gradient-to-t from-profundo/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        </div>
-        <div class="reveal-up group relative rounded-2xl overflow-hidden cursor-pointer aspect-square" onclick="openLightboxPartner(3, event)">
-          <img src="assets/parceiros/Parceiros-Post-4.png" alt="Parceiro" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
-          <div class="absolute inset-0 bg-gradient-to-t from-profundo/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        </div>
-      </div>
-
-      <div class="mt-12 flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
-        <img src="assets/parceiros/Parceiros-Story-1.png" alt="Parceiro Story" class="snap-center flex-shrink-0 w-56 h-[400px] rounded-2xl object-cover border border-areia/5" loading="lazy">
-        <img src="assets/parceiros/Parceiros-Story-2.png" alt="Parceiro Story" class="snap-center flex-shrink-0 w-56 h-[400px] rounded-2xl object-cover border border-areia/5" loading="lazy">
-        <img src="assets/parceiros/Parceiros-Story-3.png" alt="Parceiro Story" class="snap-center flex-shrink-0 w-56 h-[400px] rounded-2xl object-cover border border-areia/5" loading="lazy">
-        <img src="assets/parceiros/Parceiros-Story-4.png" alt="Parceiro Story" class="snap-center flex-shrink-0 w-56 h-[400px] rounded-2xl object-cover border border-areia/5" loading="lazy">
-      </div>
+      <div id="partners-posts" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"></div>
+      <div id="partners-stories" class="mt-12 flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"></div>
     </div>
   </section>
 
-  <!-- SECTION DIVIDER -->
   <div class="relative h-24 bg-profundo flex items-center justify-center overflow-hidden">
     <svg class="w-full max-w-4xl mx-auto" viewBox="0 0 600 40" fill="none">
       <path d="M0 20 Q150 40 300 20 Q450 0 600 20" stroke="#9C271E" stroke-width="2" fill="none" stroke-dasharray="4 8"/>
@@ -543,7 +296,6 @@
     </svg>
   </div>
 
-  <!-- ==================== CONTATO ==================== -->
   <section id="contato" class="relative py-24 md:py-32 overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-roxo via-profundo to-terra/10"></div>
 
@@ -560,10 +312,10 @@
 
     <div class="max-w-4xl mx-auto px-6 relative z-10">
       <div class="text-center mb-16 reveal">
-        <span class="text-terra text-sm uppercase tracking-[0.3em] font-semibold">faça parte da rede</span>
-        <h2 class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">contato</h2>
+        <span data-content="contato.tag" class="text-terra text-sm uppercase tracking-[0.3em] font-semibold">faça parte da rede</span>
+        <h2 data-content="contato.title" class="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 mb-2">contato</h2>
         <div class="w-20 h-1 bg-terra mx-auto mt-4 rounded-full"></div>
-        <p class="text-areia/60 mt-6 text-lg">quer se conectar conosco? escreva!</p>
+        <p data-content="contato.subtitle" class="text-areia/60 mt-6 text-lg">quer se conectar conosco? escreva!</p>
       </div>
 
       <div class="reveal-up bg-profundo/50 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-areia/5">
@@ -571,46 +323,51 @@
           <input type="hidden" name="_subject" value="Cosmopolíticas: Novo contato pelo site">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
-          <!-- Anti-spam honeypot (hidden) -->
           <input type="text" name="_honey" style="display:none">
+
           <div class="grid md:grid-cols-2 gap-6">
             <div>
-              <label for="name" class="block text-areia/60 text-sm uppercase tracking-wider mb-2">nome</label>
+              <label for="name" data-content="contato.form.labels.name" class="block text-areia/60 text-sm uppercase tracking-wider mb-2">nome</label>
               <input type="text" id="name" name="name" required class="w-full bg-areia/5 border border-areia/10 rounded-xl px-5 py-3 text-white placeholder-areia/30 focus:outline-none focus:border-luz/50 focus:ring-1 focus:ring-luz/20 transition-all" placeholder="seu nome">
             </div>
             <div>
-              <label for="email" class="block text-areia/60 text-sm uppercase tracking-wider mb-2">email</label>
+              <label for="email" data-content="contato.form.labels.email" class="block text-areia/60 text-sm uppercase tracking-wider mb-2">email</label>
               <input type="email" id="email" name="email" required class="w-full bg-areia/5 border border-areia/10 rounded-xl px-5 py-3 text-white placeholder-areia/30 focus:outline-none focus:border-luz/50 focus:ring-1 focus:ring-luz/20 transition-all" placeholder="seu@email.com">
             </div>
           </div>
+
           <div>
-            <label for="subject" class="block text-areia/60 text-sm uppercase tracking-wider mb-2">assunto</label>
+            <label for="subject" data-content="contato.form.labels.subject" class="block text-areia/60 text-sm uppercase tracking-wider mb-2">assunto</label>
             <input type="text" id="subject" name="subject" class="w-full bg-areia/5 border border-areia/10 rounded-xl px-5 py-3 text-white placeholder-areia/30 focus:outline-none focus:border-luz/50 focus:ring-1 focus:ring-luz/20 transition-all" placeholder="sobre o que quer falar?">
           </div>
+
           <div>
-            <label for="message" class="block text-areia/60 text-sm uppercase tracking-wider mb-2">mensagem</label>
+            <label for="message" data-content="contato.form.labels.message" class="block text-areia/60 text-sm uppercase tracking-wider mb-2">mensagem</label>
             <textarea id="message" name="message" rows="5" required class="w-full bg-areia/5 border border-areia/10 rounded-xl px-5 py-3 text-white placeholder-areia/30 focus:outline-none focus:border-luz/50 focus:ring-1 focus:ring-luz/20 transition-all resize-none" placeholder="sua mensagem..."></textarea>
           </div>
+
           <div class="text-center">
             <button type="submit" class="bg-terra hover:bg-terra/80 text-white px-10 py-4 rounded-full transition-all text-lg uppercase tracking-widest hover:shadow-lg hover:shadow-terra/20">
-              enviar mensagem
+              <span data-content="contato.form.submit_button">enviar mensagem</span>
             </button>
           </div>
         </form>
+
         <div id="form-success" class="hidden text-center py-8">
           <svg class="w-16 h-16 text-raiz mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <p class="text-white font-display text-2xl mb-2">mensagem enviada!</p>
-          <p class="text-areia/60">vamos responder em breve.</p>
+          <p data-content="contato.success.title" class="text-white font-display text-2xl mb-2">mensagem enviada!</p>
+          <p data-content="contato.success.subtitle" class="text-areia/60">vamos responder em breve.</p>
         </div>
       </div>
 
       <div class="reveal text-center mt-12">
-        <p class="text-areia/40 text-sm uppercase tracking-widest mb-4">nos siga</p>
+        <p data-content="contato.social_label" class="text-areia/40 text-sm uppercase tracking-widest mb-4">nos siga</p>
         <div class="flex justify-center gap-4">
-          <a href="https://instagram.com/redecosmopoliticas" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-areia/5 border border-areia/10 flex items-center justify-center hover:bg-terra/20 hover:border-terra/30 transition-all" aria-label="Instagram">
+          <a data-content-attr="site.social.instagram|href" href="https://instagram.com/redecosmopoliticas" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-areia/5 border border-areia/10 flex items-center justify-center hover:bg-terra/20 hover:border-terra/30 transition-all" aria-label="Instagram">
             <svg class="w-5 h-5 text-areia" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           </a>
-          <a href="mailto:contato@cosmopoliticas.org" class="w-12 h-12 rounded-full bg-areia/5 border border-areia/10 flex items-center justify-center hover:bg-terra/20 hover:border-terra/30 transition-all" aria-label="Email">
+
+          <a data-content-attr="site.social.email|href" href="mailto:contato@cosmopoliticas.org" class="w-12 h-12 rounded-full bg-areia/5 border border-areia/10 flex items-center justify-center hover:bg-terra/20 hover:border-terra/30 transition-all" aria-label="Email">
             <svg class="w-5 h-5 text-areia" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           </a>
         </div>
@@ -618,15 +375,14 @@
     </div>
   </section>
 
-  <!-- ==================== FOOTER ==================== -->
   <footer class="relative bg-profundo border-t border-areia/5 py-12">
     <div class="max-w-7xl mx-auto px-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="flex items-center gap-3">
-          <img src="assets/logo/Simbolo-Branco.png" alt="cosmopolíticas" class="h-10 w-auto">
+          <img data-content-img="navbar.logo" src="assets/logo/Simbolo-Branco.png" alt="cosmopolíticas" class="h-10 w-auto">
           <img src="assets/logo/Tipografico-Branco.png" alt="cosmopolíticas" class="h-6 w-auto">
         </div>
-        <div class="flex flex-wrap justify-center gap-6 text-sm">
+        <div id="footer-links" class="flex flex-wrap justify-center gap-6 text-sm">
           <a href="#quem-somos" class="text-areia/50 hover:text-luz transition-colors">quem somos</a>
           <a href="#o-que-fazemos" class="text-areia/50 hover:text-luz transition-colors">o que fazemos</a>
           <a href="#lutas" class="text-areia/50 hover:text-luz transition-colors">lutas</a>
@@ -635,12 +391,11 @@
         </div>
       </div>
       <div class="mt-8 pt-8 border-t border-areia/5 text-center">
-        <p class="text-areia/30 text-sm">© <span id="year"></span> cosmopolíticas — rede de incidência política decolonial</p>
+        <p class="text-areia/30 text-sm">© <span id="year"></span> <span id="footer-prefix">cosmopolíticas — rede de incidência política decolonial</span></p>
       </div>
     </div>
   </footer>
 
-  <!-- ==================== LIGHTBOX MODAL ==================== -->
   <div id="lightbox" class="fixed inset-0 z-[100] bg-profundo/95 backdrop-blur-lg hidden items-center justify-center p-4">
     <button id="lightbox-close" class="absolute top-6 right-6 text-white hover:text-luz transition-colors z-10">
       <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -655,7 +410,6 @@
     <span id="lightbox-counter" class="absolute bottom-6 text-areia/50 text-sm"></span>
   </div>
 
-  <!-- ==================== VIDEO MODAL ==================== -->
   <div id="video-modal" class="fixed inset-0 z-[100] bg-profundo/95 backdrop-blur-lg hidden items-center justify-center p-4" onclick="closeVideoModal(event)">
     <button id="video-close" class="absolute top-6 right-6 text-white hover:text-luz transition-colors z-10">
       <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>

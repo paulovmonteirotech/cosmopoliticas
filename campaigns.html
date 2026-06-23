@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-content="campaigns.page_title">Cosmopolíticas — Campanhas</title>
+  <meta name="description" content="Página de campanhas públicas da Cosmopolíticas, com mobilização por email, minuta e contatos parlamentares.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { terra: '#9C271E', luz: '#F39227', roxo: '#50143E', raiz: '#294902', areia: '#DBC6C1', dourado: '#C4AA3C', profundo: '#1F0032' }, fontFamily: { display: ['"Blakest"', 'serif'], body: ['"Noka"', 'sans-serif'] } } } };
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/logo/Simbolo-Branco.png">
+  <style>
+    body{background:#1F0032;color:#DBC6C1;font-family:'Noka','Space Grotesk',sans-serif}.campaign-card{backdrop-filter:blur(12px)}
+  </style>
+  <script src="js/content-loader.js" defer></script>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+<header class="sticky top-0 z-40 bg-profundo/85 backdrop-blur-md border-b border-areia/10">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
+    <a href="./index.html" class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-terra to-luz"></div>
+      <div>
+        <p class="text-xs uppercase tracking-[0.35em] text-areia/50" data-content="campaigns.nav_label">cosmopolíticas</p>
+        <p class="font-display text-xl text-white" data-content="campaigns.nav_title">campanhas</p>
+      </div>
+    </a>
+    <nav id="campaign-nav" class="hidden md:flex items-center gap-6 text-sm uppercase tracking-[0.25em] text-areia/70">
+      <a href="#campanha" class="hover:text-luz transition-colors">campanha</a>
+      <a href="#minuta" class="hover:text-luz transition-colors">minuta</a>
+      <a href="#deputados" class="hover:text-luz transition-colors">deputados</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <!-- Hero -->
+  <section class="relative overflow-hidden pt-24 pb-20">
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <div class="max-w-4xl">
+        <p data-content="campaigns.hero_tag" class="text-luz text-sm uppercase tracking-[0.35em] mb-5">mobilização pública</p>
+        <h1 data-content="campaigns.hero_title" class="font-display text-4xl sm:text-5xl lg:text-7xl text-white leading-tight mb-6">Programa Nacional de Proteção Permanente de Rios</h1>
+        <p data-content="campaigns.hero_description" class="text-areia/80 text-lg md:text-2xl leading-relaxed max-w-3xl">A proposta em nível nacional será incluída na pauta da reunião deliberativa da CMADS nesta quarta-feira.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Campanha Section -->
+  <section id="campanha" class="pb-10">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-[1.25fr_.75fr] gap-8 items-start">
+        <article class="campaign-card rounded-[28px] border border-areia/10 bg-white/5 p-8 md:p-10 shadow-2xl">
+          <p data-content="campaigns.message_label" class="text-dourado text-sm uppercase tracking-[0.35em] mb-4">texto-base da ação</p>
+          <div id="campaign-message" class="space-y-5 text-areia/85 text-lg leading-relaxed"></div>
+          <div class="mt-8 flex flex-wrap gap-4">
+
+            <a href="#deputados" class="bg-terra hover:bg-terra/80 text-white px-6 py-3 rounded-full font-semibold transition-colors">Ver lista de emails</a>
+          </div>
+        </article>
+        <aside class="campaign-card rounded-[28px] border border-areia/10 bg-roxo/20 p-8 shadow-2xl">
+          <p data-content="campaigns.action_label" class="text-luz text-sm uppercase tracking-[0.35em] mb-4">ação sugerida</p>
+          <div id="campaign-action-steps" class="space-y-4 text-areia/80"></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Minuta Section -->
+  <section id="minuta" class="py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="campaign-card rounded-[32px] border border-areia/10 bg-white/5 p-8 md:p-10">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
+          <div>
+            <p data-content="campaigns.template_label" class="text-terra text-sm uppercase tracking-[0.35em] mb-3">minuta sugerida</p>
+            <h2 data-content="campaigns.template_title" class="font-display text-3xl md:text-5xl text-white mb-3">Espaço para minuta de email</h2>
+          </div>
+          <button id="copyTemplate" class="bg-terra hover:bg-terra/80 text-white px-6 py-3 rounded-full font-semibold transition-colors self-start md:self-auto">Copiar minuta</button>
+        </div>
+        <div id="campaign-template" class="rounded-3xl border border-areia/10 bg-profundo/60 p-6 md:p-8 text-areia/80 leading-relaxed whitespace-pre-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deputados Section -->
+  <section id="deputados" class="py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+        <div>
+          <p data-content="campaigns.deputies_section.label" class="text-raiz text-sm uppercase tracking-[0.35em] mb-3">titulares da CMADS</p>
+          <h2 data-content="campaigns.deputies_section.title" class="font-display text-3xl md:text-5xl text-white mb-3">Emails dos deputados</h2>
+          <p data-content="campaigns.deputies_section.description" class="text-areia/70 max-w-3xl">Lista pronta para mobilização.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <button id="copyAllEmails" class="bg-luz hover:bg-luz/90 text-profundo px-6 py-3 rounded-full font-semibold transition-colors">Copiar todos os emails</button>
+
+        </div>
+      </div>
+      <div id="deputies-grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+// Copy functionality — works with CSS selectors, independent of content-loader.js
+(async function() {
+  async function copyText(text, btn) {
+    await navigator.clipboard.writeText(text);
+    const prev = btn.textContent;
+    btn.textContent = 'Copiado!';
+    setTimeout(() => btn.textContent = prev, 1800);
+  }
+
+  // These fire after content-loader.js populates the DOM
+  function initCopyButtons() {
+    const copyAllBtn = document.getElementById('copyAllEmails');
+    const copyTemplateBtn = document.getElementById('copyTemplate');
+    const copyMsgBtn = document.getElementById('copyCampaignMessage');
+
+    if (copyAllBtn) {
+      copyAllBtn.addEventListener('click', function() {
+        const emails = Array.from(document.querySelectorAll('#deputies-grid [data-email]'))
+          .map(b => b.dataset.email).filter(Boolean).join(',');
+        if (emails) copyText(emails, this);
+      });
+    }
+
+    if (copyTemplateBtn) {
+      copyTemplateBtn.addEventListener('click', function() {
+        const t = document.getElementById('campaign-template');
+        if (t) copyText(t.textContent.trim(), this);
+      });
+    }
+
+    if (copyMsgBtn) {
+      copyMsgBtn.addEventListener('click', function() {
+        const msgs = document.querySelectorAll('#campaign-message p');
+        if (msgs.length) copyText(Array.from(msgs).map(p => p.textContent).join('\n\n'), this);
+      });
+    }
+
+    document.querySelectorAll('.copy-email').forEach(btn => {
+      btn.addEventListener('click', function() { copyText(this.dataset.email, this); });
+    });
+  }
+
+  // Try immediately in case content loaded fast, then listen for event
+  initCopyButtons();
+  document.addEventListener('content:loaded', initCopyButtons);
+})();
+</script>
+</body>
+</html>

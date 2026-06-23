@@ -1,10 +1,39 @@
 /* ============================================
    COSMOPOLÍTICAS — Custom Styles
-   ============================================ */
+============================================ */
+
+/* --- Custom Fonts (self-hosted) --- */
+@font-face {
+  font-family: 'Blakest';
+  src: url('../assets/fonts/blakest-extrabold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noka';
+  src: url('../assets/fonts/noka-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* --- Smooth Scroll --- */
 html {
   scroll-behavior: smooth;
+}
+
+/* --- Drop Cap for Quem Somos intro --- */
+[data-content="quem_somos.intro_paragraph"]::first-letter,
+.drop-cap::first-letter {
+  float: left;
+  font-family: 'Blakest', 'Playfair Display', serif;
+  font-size: 2rem;
+  line-height: 1;
+  margin-right: 0.4em;
+  color: #F39227;
+  font-weight: 800;
 }
 
 /* --- Selection Color --- */
@@ -17,13 +46,16 @@ html {
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: #1F0032;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #50143E;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #9C271E;
 }
@@ -32,6 +64,7 @@ html {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -39,22 +72,29 @@ html {
 
 /* ============================================
    CUSTOM CURSOR
-   ============================================ */
+============================================ */
 #cursor {
+  opacity: 0;
   transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, background 0.2s;
+  transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s;
+  will-change: transform;
 }
+
 #cursor-ring {
+  opacity: 0;
   transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  transition: width 0.3s, height 0.3s, opacity 0.3s, border-color 0.3s;
+  will-change: transform;
 }
-body:hover #cursor {
+
+body:hover #cursor,
+body:hover #cursor-ring {
   opacity: 1;
 }
 
 /* ============================================
    NAVBAR
-   ============================================ */
+============================================ */
 #navbar.scrolled {
   background: rgba(31, 0, 50, 0.95);
   backdrop-filter: blur(20px);
@@ -66,25 +106,30 @@ body:hover #cursor {
 #menu-btn.active .menu-line:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
+
 #menu-btn.active .menu-line:nth-child(2) {
   opacity: 0;
 }
+
 #menu-btn.active .menu-line:nth-child(3) {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
 /* ============================================
    HERO ANIMATIONS
-   ============================================ */
+============================================ */
 .hero-logo {
   animation: heroFadeUp 1s ease-out 0.3s forwards;
 }
+
 .hero-title {
   animation: heroFadeUp 1s ease-out 0.6s forwards;
 }
+
 .hero-subtitle {
   animation: heroFadeUp 1s ease-out 0.9s forwards;
 }
+
 .hero-cta {
   animation: heroFadeUp 1s ease-out 1.2s forwards;
 }
@@ -94,13 +139,17 @@ body:hover #cursor {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Hero Video */
+.hero-video {
+  will-change: transform;
+}
+
 .hero-video video {
   min-width: 100%;
   min-height: 100%;
@@ -108,16 +157,17 @@ body:hover #cursor {
 
 /* ============================================
    PARTICLES
-   ============================================ */
+============================================ */
 #particles {
   position: absolute;
   inset: 0;
   overflow: hidden;
   z-index: 1;
 }
+
 .particle {
   position: absolute;
-  border-radius: 50%;
+  border-radius: 9999px;
   pointer-events: none;
   animation: particleFloat linear infinite;
 }
@@ -127,12 +177,15 @@ body:hover #cursor {
     transform: translateY(100vh) rotate(0deg);
     opacity: 0;
   }
+
   10% {
     opacity: 1;
   }
+
   90% {
     opacity: 1;
   }
+
   100% {
     transform: translateY(-100px) rotate(360deg);
     opacity: 0;
@@ -141,12 +194,13 @@ body:hover #cursor {
 
 /* ============================================
    SCROLL REVEAL ANIMATIONS
-   ============================================ */
+============================================ */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
+
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
@@ -157,6 +211,7 @@ body:hover #cursor {
   transform: translateX(-60px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
+
 .reveal-left.visible {
   opacity: 1;
   transform: translateX(0);
@@ -167,6 +222,7 @@ body:hover #cursor {
   transform: translateX(60px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
+
 .reveal-right.visible {
   opacity: 1;
   transform: translateX(0);
@@ -177,12 +233,12 @@ body:hover #cursor {
   transform: translateY(50px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
+
 .reveal-up.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Staggered reveal for grid items */
 .reveal-up:nth-child(1) { transition-delay: 0.1s; }
 .reveal-up:nth-child(2) { transition-delay: 0.2s; }
 .reveal-up:nth-child(3) { transition-delay: 0.3s; }
@@ -194,11 +250,12 @@ body:hover #cursor {
 
 /* ============================================
    SERVICE CARDS
-   ============================================ */
+============================================ */
 .service-card {
   position: relative;
   overflow: hidden;
 }
+
 .service-card::before {
   content: '';
   position: absolute;
@@ -209,20 +266,18 @@ body:hover #cursor {
   background: linear-gradient(90deg, transparent, rgba(243, 146, 39, 0.03), transparent);
   transition: left 0.7s;
 }
+
 .service-card:hover::before {
   left: 100%;
 }
 
 /* ============================================
-   GALLERY ITEMS
-   ============================================ */
+   GALLERY / VIDEO
+============================================ */
 .gallery-item img {
   will-change: transform;
 }
 
-/* ============================================
-   VIDEO CARDS
-   ============================================ */
 .video-card::after {
   content: '';
   position: absolute;
@@ -232,24 +287,29 @@ body:hover #cursor {
   pointer-events: none;
   transition: border-color 0.3s;
 }
+
 .video-card:hover::after {
   border-color: rgba(243, 146, 39, 0.3);
 }
 
 /* ============================================
-   LIGHTBOX
-   ============================================ */
-#lightbox, #video-modal {
+   LIGHTBOX / MODAL
+============================================ */
+#lightbox,
+#video-modal {
   transition: opacity 0.3s ease;
 }
+
 #lightbox img {
   animation: lightboxZoom 0.3s ease-out;
 }
+
 @keyframes lightboxZoom {
   from {
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -258,43 +318,71 @@ body:hover #cursor {
 
 /* ============================================
    FORM STYLES
-   ============================================ */
-input:focus, textarea:focus {
+============================================ */
+input:focus,
+textarea:focus {
   box-shadow: 0 0 0 3px rgba(243, 146, 39, 0.1);
 }
 
 /* ============================================
-   SECTION DIVIDERS — animated dashes
-   ============================================ */
+   SECTION DIVIDERS
+============================================ */
 section + div svg path {
   stroke-dasharray: 600;
   stroke-dashoffset: 600;
   transition: stroke-dashoffset 2s ease-in-out;
 }
+
 section + div.visible svg path {
   stroke-dashoffset: 0;
 }
 
 /* ============================================
-   PARALLAX
-   ============================================ */
-.hero-video {
-  will-change: transform;
+   INDIGENOUS PATTERN
+============================================ */
+.indigenous-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DBC6C1' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ============================================
+   IMAGE LOADING
+============================================ */
+img {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+img.loaded {
+  opacity: 1;
+}
+
+img.is-loading {
+  opacity: 0;
+}
+
+img[loading="lazy"] {
+  min-height: 100px;
+}
+
+#lightbox-img,
+#modal-video {
+  opacity: 1 !important;
 }
 
 /* ============================================
    RESPONSIVE
-   ============================================ */
+============================================ */
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2.5rem !important;
   }
+
   .hero-subtitle {
     font-size: 1rem !important;
   }
 
-  /* Disable custom cursor on mobile */
-  #cursor, #cursor-ring {
+  #cursor,
+  #cursor-ring {
     display: none !important;
   }
 }
@@ -304,31 +392,4 @@ section + div.visible svg path {
     padding-top: 4rem !important;
     padding-bottom: 4rem !important;
   }
-}
-
-/* ============================================
-   INDIGENOUS PATTERN — subtle background
-   ============================================ */
-.indigenous-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23DBC6C1' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-
-/* ============================================
-   SMOOTH IMAGE LOADING
-   ============================================ */
-img {
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-img.loaded {
-  opacity: 1;
-}
-img[loading="lazy"] {
-  min-height: 100px;
-}
-
-/* Lightbox e video modal — sempre visíveis (override do img lazy load) */
-#lightbox-img,
-#modal-video {
-  opacity: 1 !important;
 }
