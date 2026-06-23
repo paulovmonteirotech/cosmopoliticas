@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cosmopolíticas — CMS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>tailwind.config={theme:{extend:{colors:{terra:'#9C271E',luz:'#F39227',roxo:'#50143E',raiz:'#294902',areia:'#DBC6C1',dourado:'#C4AA3C',profundo:'#1F0032',cmsBg:'#0E0418',cmsPanel:'#160928',cmsPanel2:'#1E0F38',cmsBorder:'rgba(219,198,193,0.08)',cmsBorderLuz:'rgba(243,146,39,0.2)',cmsText:'#F4EBE8',cmsMuted:'#8A7A75',cmsMutedLight:'#BAA8A3'}}}}</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--r:14px;--rs:10px;--shadow:0 8px 32px rgba(0,0,0,.35)}
+html,body{margin:0;padding:0;height:100%;background:var(--cmsBg);color:var(--cmsText);font-family:Inter,system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(219,198,193,.15);border-radius:3px}
+input,button,textarea,select{font:inherit}button{cursor:pointer}
+
+.app{display:grid;grid-template-columns:260px 1fr 380px;height:100vh;overflow:hidden}
+.sidebar{background:rgba(10,2,16,.6);border-right:1px solid var(--cmsBorder);display:flex;flex-direction:column;overflow:hidden}
+.sidebar-scroll{flex:1;overflow-y:auto;padding:0}
+.main{display:flex;flex-direction:column;overflow:hidden}
+.main-scroll{flex:1;overflow-y:auto;padding:24px 28px}
+.preview{border-left:1px solid var(--cmsBorder);background:rgba(8,1,14,.4);display:flex;flex-direction:column;overflow:hidden}
+.preview-scroll{flex:1;overflow-y:auto;padding:20px}
+
+.brand{display:flex;align-items:center;gap:10px;padding:18px 18px 14px;border-bottom:1px solid var(--cmsBorder)}
+.brand-m{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#9C271E,#F39227);flex-shrink:0}
+.brand h1{margin:0;font-size:15px;font-weight:700;letter-spacing:.02em}
+.brand p{margin:2px 0 0;font-size:11px;color:var(--cmsMuted)}
+
+.sticky-bar{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--cmsBg) 60%,rgba(14,4,24,.92));padding:16px 28px 12px;backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border .2s}
+.sticky-bar.scrolled{border-bottom-color:var(--cmsBorder)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.toolbar h2{margin:0;font-size:20px;font-weight:700}
+.toolbar p{margin:2px 0 0;font-size:12px;color:var(--cmsMuted)}
+.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.btn{border:0;border-radius:var(--rs);padding:8px 14px;font-size:13px;font-weight:600;transition:all .15s ease;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,#9C271E,#BF3F35);color:#fff}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(156,39,30,.4)}
+.btn-accent{background:linear-gradient(135deg,#F39227,#E37E11);color:#1F0032}
+.btn-accent:hover{box-shadow:0 4px 16px rgba(243,146,39,.35)}
+.btn-zip{background:linear-gradient(135deg,#294902,#3D6E04);color:#fff}
+.btn-zip:hover{box-shadow:0 4px 16px rgba(41,73,2,.45)}
+.btn-ghost{background:rgba(255,255,255,.05);color:var(--cmsText);border:1px solid var(--cmsBorder)}
+.btn-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
+.btn-danger{background:rgba(177,72,72,.2);color:#F9A9A9;border:1px solid rgba(177,72,72,.25)}
+.btn-danger:hover{background:rgba(177,72,72,.35)}
+.btn-success{background:rgba(58,148,85,.2);color:#B7F0C8;border:1px solid rgba(58,148,85,.25)}
+.btn-success:hover{background:rgba(58,148,85,.35)}
+.btn-sm{padding:6px 10px;font-size:12px;border-radius:8px}
+.btn-icon{width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--cmsBorder);background:rgba(255,255,255,.03);color:var(--cmsMutedLight);transition:all .15s}
+.btn-icon:hover{background:rgba(255,255,255,.08);color:var(--cmsText)}
+.btn-icon.active{background:rgba(243,146,39,.15);color:#F39227;border-color:rgba(243,146,39,.3)}
+.btn-icon.danger{color:#F9A9A9;border-color:rgba(177,72,72,.25)}
+.btn-icon.danger:hover{background:rgba(177,72,72,.2)}
+
+.label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--cmsMuted);margin-bottom:5px;font-weight:600}
+.label-hint{font-size:11px;color:var(--cmsMuted);margin-top:4px;line-height:1.4;font-weight:400}
+.input,.textarea,.select{width:100%;border-radius:var(--rs);border:1px solid var(--cmsBorder);background:var(--cmsInput);color:var(--cmsText);padding:10px 12px;outline:none;transition:border .15s,box-shadow .15s}
+.input:focus,.textarea:focus,.select:focus{border-color:rgba(243,146,39,.35);box-shadow:0 0 0 3px rgba(243,146,39,.08)}
+.textarea{min-height:80px;resize:vertical}
+.select{cursor:pointer}
+.input::placeholder,.textarea::placeholder{color:var(--cmsMuted)}
+
+.field{margin-bottom:16px}
+.field-group{display:grid;gap:12px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+.card{background:var(--cmsPanel);border:1px solid var(--cmsBorder);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.card-header h3{margin:0;font-size:15px;font-weight:700}
+.card-title{font-size:15px;font-weight:700;margin:0 0 12px}
+
+.img-upload{position:relative;border:2px dashed var(--cmsBorder);border-radius:var(--r);padding:20px;text-align:center;transition:all .2s;cursor:pointer;background:rgba(255,255,255,.015)}
+.img-upload:hover,.img-upload.dragover{border-color:rgba(243,146,39,.35);background:rgba(243,146,39,.04)}
+.img-upload.has-image{border-style:solid;border-color:var(--cmsBorder);padding:0;overflow:hidden}
+.img-upload img{width:100%;max-height:180px;object-fit:cover;display:block}
+.img-upload .upload-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--cmsMuted);font-size:13px}
+.img-upload .upload-placeholder svg{opacity:.4}
+.img-upload .upload-actions{position:absolute;top:8px;right:8px;display:flex;gap:4px;opacity:0;transition:opacity .15s}
+.img-upload:hover .upload-actions,.img-upload.has-image .upload-actions{opacity:1}
+.img-upload .file-info{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:24px 12px 8px;font-size:11px;color:var(--areia)}
+.img-upload .file-info code{background:rgba(255,255,255,.1);padding:1px 5px;border-radius:4px;font-size:10px}
+
+.list-container{min-height:40px}
+.list-item{background:var(--cmsPanel2);border:1px solid var(--cmsBorder);border-radius:var(--r);padding:14px;margin-bottom:8px;transition:border-color .15s}
+.list-item:hover{border-color:rgba(255,255,255,.12)}
+.list-item-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.list-item-title{font-size:13px;font-weight:600;color:var(--cmsMutedLight)}
+.list-item-actions{display:flex;gap:4px}
+.list-item-body{display:grid;gap:10px}
+.drag-handle{cursor:grab;color:var(--cmsMuted);font-size:16px;user-select:none;opacity:.4;transition:opacity .15s}
+.drag-handle:hover{opacity:.8}
+.list-item.dragging{opacity:.5;border-color:rgba(243,146,39,.4)}
+
+.add-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;border-radius:var(--rs);border:1px dashed var(--cmsBorder);background:transparent;color:var(--cmsMuted);font-size:13px;font-weight:500;transition:all .15s;margin-top:4px}
+.add-btn:hover{border-color:rgba(243,146,39,.3);color:#F39227;background:rgba(243,146,39,.04)}
+
+.empty-state{text-align:center;padding:24px 16px;color:var(--cmsMuted);font-size:13px;background:rgba(255,255,255,.015);border-radius:var(--rs);border:1px solid var(--cmsBorder)}
+
+.section-nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;transition:all .15s;border-left:3px solid transparent;font-size:13px}
+.section-nav-item:hover{background:rgba(255,255,255,.03)}
+.section-nav-item.active{background:rgba(243,146,39,.06);border-left-color:#F39227;color:#F39227}
+.section-nav-item .icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.section-nav-item.active .icon{background:rgba(243,146,39,.12)}
+.section-nav-item:not(.active) .icon{background:rgba(255,255,255,.04)}
+.section-nav-item .name{font-weight:500}
+.section-nav-item .badge{margin-left:auto;font-size:10px;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--cmsMuted)}
+.section-nav-item.modified .badge{background:rgba(243,146,39,.15);color:#F39227}
+
+.nav-group{padding:12px 18px 6px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--cmsMuted);font-weight:700}
+
+.preview-frame{background:#1F0032;border:1px solid var(--cmsBorder);border-radius:var(--r);overflow:hidden;min-height:300px}
+.preview-frame .preview-inner{padding:16px;color:#DBC6C1;font-size:13px}
+.preview-frame .preview-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(219,198,193,.4);margin-bottom:10px;font-weight:700}
+
+.search-box{margin:0 12px 8px;position:relative}
+.search-box input{width:100%;border-radius:var(--rs);border:1px solid var(--cmsBorder);background:rgba(255,255,255,.03);color:var(--cmsText);padding:8px 12px 8px 32px;font-size:13px;outline:none}
+.search-box input:focus{border-color:rgba(243,146,39,.3);box-shadow:0 0 0 3px rgba(243,146,39,.06)}
+.search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--cmsMuted);opacity:.5}
+
+.drop-zone{border:2px dashed rgba(243,146,39,.25);border-radius:var(--r);padding:16px;text-align:center;margin:8px 12px 12px;background:rgba(243,146,39,.04);transition:all .2s;font-size:12px;color:var(--cmsMuted)}
+.drop-zone.dragover{border-color:rgba(243,146,39,.5);background:rgba(243,146,39,.1)}
+
+.status-bar{padding:8px 12px;font-size:11px;color:var(--cmsMuted);border-top:1px solid var(--cmsBorder);display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.05);font-size:10px;border:1px solid rgba(255,255,255,.06)}
+.chip.warn{background:rgba(243,146,39,.1);color:#F39227;border-color:rgba(243,146,39,.15)}
+.chip.ok{background:rgba(58,148,85,.1);color:#B7F0C8;border-color:rgba(58,148,85,.15)}
+
+.toast-container{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{padding:12px 16px;border-radius:var(--rs);font-size:13px;font-weight:500;backdrop-filter:blur(12px);animation:toastIn .25s ease;max-width:360px;border:1px solid}
+.toast.success{background:rgba(58,148,85,.15);color:#B7F0C8;border-color:rgba(58,148,85,.25)}
+.toast.error{background:rgba(177,72,72,.15);color:#F9A9A9;border-color:rgba(177,72,72,.25)}
+.toast.info{background:rgba(243,146,39,.12);color:#F0DA7D;border-color:rgba(243,146,39,.2)}
+@keyframes toastIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.undo-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--cmsPanel2);border:1px solid var(--cmsBorder);border-radius:var(--rs);padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:13px;z-index:999;box-shadow:var(--shadow);animation:toastIn .2s ease}
+.undo-bar button{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;animation:fadeIn .15s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--cmsPanel);border:1px solid var(--cmsBorder);border-radius:var(--r);padding:24px;max-width:480px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.modal h3{margin:0 0 16px;font-size:18px}
+
+.progress-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin:12px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#294902,#3D6E04);border-radius:3px;transition:width .3s ease;width:0%}
+
+.tabs{display:flex;gap:2px;background:rgba(255,255,255,.03);border-radius:var(--rs);padding:3px;margin-bottom:16px}
+.tab{flex:1;text-align:center;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;color:var(--cmsMuted);cursor:pointer;transition:all .15s}
+.tab:hover{color:var(--cmsText)}
+.tab.active{background:rgba(255,255,255,.06);color:var(--cmsText)}
+
+.raw-editor{width:100%;min-height:300px;border-radius:var(--rs);background:#0A0212;color:#F5ECE8;border:1px solid var(--cmsBorder);padding:14px;font-family:'SF Mono',Monaco,Menlo,Consolas,monospace;font-size:12px;line-height:1.6;resize:vertical;outline:none}
+.raw-editor:focus{border-color:rgba(243,146,39,.3)}
+
+.color-swatch{width:24px;height:24px;border-radius:6px;display:inline-block;border:2px solid rgba(255,255,255,.1)}
+
+.hello-panel{text-align:center;padding:40px 20px}
+.hello-panel .brand-big{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#9C271E,#F39227);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.hello-panel h2{margin:0 0 8px;font-size:22px}
+.hello-panel p{color:var(--cmsMuted);font-size:14px;margin:0 0 24px}
+.hello-steps{text-align:left;max-width:400px;margin:0 auto}
+.hello-step{display:flex;gap:12px;padding:10px 0}
+.hello-step .num{width:28px;height:28px;border-radius:50%;background:rgba(243,146,39,.12);color:#F39227;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.hello-step .text{font-size:13px;color:var(--cmsMutedLight)}
+.hello-step .text strong{color:var(--cmsText);font-weight:600}
+
+.welcome-buttons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+
+.hidden{display:none!important}
+
+@media(max-width:1200px){.app{grid-template-columns:240px 1fr}.preview{display:none}}
+@media(max-width:860px){.app{grid-template-columns:1fr}.sidebar{position:fixed;z-index:50;width:280px;height:100vh;transform:translateX(-100%);transition:transform .25s}.sidebar.open{transform:translateX(0)}.main{padding-left:0}}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-m"></div>
+      <div><h1>Cosmopolíticas CMS</h1><p>Editor de conteúdo</p></div>
+    </div>
+
+    <div class="search-box">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="sectionSearch" placeholder="Buscar seção..."/>
+    </div>
+
+    <div id="dropZone" class="drop-zone">
+      📎 Arraste <strong>content.json</strong> aqui<br><span style="font-size:11px">ou clique para selecionar</span>
+      <input type="file" id="fileInput" accept=".json" style="display:none"/>
+    </div>
+
+    <div class="sidebar-scroll" id="sidebarScroll">
+      <div class="nav-group">Página principal</div>
+      <div id="navMain"></div>
+      <div class="nav-group">Página de campanhas</div>
+      <div id="navCampaigns"></div>
+    </div>
+
+    <div style="padding:12px;border-top:1px solid var(--cmsBorder);display:flex;flex-direction:column;gap:8px">
+      <button id="btnExportJson" class="btn btn-accent w-full justify-center">⬇ Baixar JSON</button>
+      <button style="display:none" id="btnExportZip" class="btn btn-zip w-full justify-center">⬇ Baixar Projeto (ZIP)</button>
+      <button style="display:none" id="btnCopyJson" class="btn btn-ghost w-full justify-center btn-sm">Copiar</button>
+      <button id="btnRestore" class="btn btn-ghost w-full justify-center btn-sm">Restaurar rascunho</button>
+      <!-- Guide -->
+      <div style="background:rgba(243,146,39,.06);border:1px solid rgba(243,146,39,.15);border-radius:12px;padding:14px;margin-top:4px">
+        <div style="font-weight:700;color:#F39227;margin-bottom:8px;font-size:13px">📋 Como atualizar o site</div>
+        <ol style="margin:0;padding-left:18px;font-size:12px;line-height:1.7;color:var(--cmsMutedLight)">
+          <li style="margin-bottom:6px">Clique em <strong style="color:var(--cmsText)">⬇ Baixar JSON</strong> acima</li>
+          <li style="margin-bottom:6px">Substitua o arquivo <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:4px;font-size:11px">data/content.json</code> dentro da pasta do projeto</li>
+          <li style="margin-bottom:6px">Para cada imagem, veja o <strong style="color:var(--cmsText)">caminho</strong> exibido no campo (ex: <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:4px;font-size:11px">assets/feed/IMG.png</code>)</li>
+          <li>Copie a imagem para a <strong style="color:var(--cmsText)">pasta indicada</strong> dentro de <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:4px;font-size:11px">assets/</code></li>
+        </ol>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:var(--cmsMuted)">
+          <div style="margin-bottom:4px;font-weight:600;color:var(--cmsMutedLight)">Pastas disponíveis:</div>
+          <span style="display:inline-block;margin:2px;background:rgba(255,255,255,.06);padding:2px 7px;border-radius:6px;font-size:10px;border:1px solid rgba(255,255,255,.06)">assets/midias/</span>
+          <span style="display:inline-block;margin:2px;background:rgba(255,255,255,.06);padding:2px 7px;border-radius:6px;font-size:10px;border:1px solid rgba(255,255,255,.06)">assets/feed/</span>
+          <span style="display:inline-block;margin:2px;background:rgba(255,255,255,.06);padding:2px 7px;border-radius:6px;font-size:10px;border:1px solid rgba(255,255,255,.06)">assets/stories/</span>
+          <span style="display:inline-block;margin:2px;background:rgba(255,255,255,.06);padding:2px 7px;border-radius:6px;font-size:10px;border:1px solid rgba(255,255,255,.06)">assets/parceiros/</span>
+          <span style="display:inline-block;margin:2px;background:rgba(255,255,255,.06);padding:2px 7px;border-radius:6px;font-size:10px;border:1px solid rgba(255,255,255,.06)">assets/logo/</span>
+          <span style="display:inline-block;margin:2px;background:rgba(255,255,255,.06);padding:2px 7px;border-radius:6px;font-size:10px;border:1px solid rgba(255,255,255,.06)">assets/videos/</span>
+        </div>
+      </div>
+      <div class="status-bar" id="statusBar" style="margin-top:8px">
+        <span class="chip ok" id="chipSave">Pronto</span>
+        <span class="chip" id="chipChanges">0 mudanças</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN EDITOR -->
+  <main class="main">
+    <div class="sticky-bar" id="stickyBar">
+      <div class="toolbar">
+        <div>
+          <h2 id="editorTitle">Bem-vindo ao CMS</h2>
+          <p id="editorDesc">Selecione uma seção para editar</p>
+        </div>
+        <div class="toolbar-actions" id="toolbarActions" style="display:none">
+          <button id="btnUndo" class="btn btn-ghost btn-sm" title="Desfazer (Ctrl+Z)">↩ Desfazer</button>
+          <button id="btnResetSection" class="btn btn-danger btn-sm">Resetar</button>
+          <button style="display: none;" id="btnSaveNow" class="btn btn-primary btn-sm">💾 Salvar</button>
+        </div>
+      </div>
+    </div>
+    <div class="main-scroll" id="mainScroll">
+      <!-- Welcome state -->
+      <div id="welcomePanel" class="hello-panel">
+        <div class="brand-big">✦</div>
+        <h2>Gerencie todo o conteúdo do site</h2>
+        <p>Edite textos, troque imagens e gerencie listas visualmente.</p>
+        <div class="hello-steps">
+          <div class="hello-step"><div class="num">1</div><div class="text"><strong>Carregue</strong> o conteúdo clicando "Carregar conteúdo do site" ou arraste o content.json aqui</div></div>
+          <div class="hello-step"><div class="num">2</div><div class="text"><strong>Edite</strong> as seções clicando no menu lateral. Para imagens, faça upload e anote o caminho exibido</div></div>
+          <div class="hello-step"><div class="num">3</div><div class="text"><strong>Baixe o JSON</strong> pelo botão na lateral e substitua o arquivo <code>data/content.json</code></div></div>
+          <div class="hello-step"><div class="num">4</div><div class="text"><strong>Copie as imagens</strong> para as pastas indicadas dentro de <code>assets/</code></div></div>
+        </div>
+        <div class="welcome-buttons">
+          <button id="btnLoadDemo" class="btn btn-accent">Carregar conteúdo do site</button>
+          <button id="btnLoadDemoEmpty" class="btn btn-ghost">Exemplo vazio</button>
+        </div>
+      </div>
+      <!-- Editor content -->
+      <div id="editorContent" class="hidden"></div>
+      <!-- Raw tab -->
+      <div id="rawPanel" class="hidden">
+        <div class="tabs">
+          <div class="tab active" data-tab="visual">Editor visual</div>
+          <div class="tab" data-tab="raw">JSON bruto</div>
+        </div>
+        <textarea id="rawJson" class="raw-editor" spellcheck="false"></textarea>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button style="display: none;" id="btnApplyRaw" class="btn btn-primary btn-sm">Aplicar JSON</button>
+          <button id="btnRefreshRaw" class="btn btn-ghost btn-sm">Atualizar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PREVIEW -->
+  <aside class="preview" id="previewPanel">
+    <div style="padding:14px 16px 10px;border-bottom:1px solid var(--cmsBorder);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--cmsMuted)">Preview ao vivo</div>
+    <div class="preview-scroll" id="previewScroll">
+      <div class="preview-frame" id="previewFrame">
+        <div class="preview-inner" id="previewInner">
+          <div style="text-align:center;color:var(--cmsMuted);padding:40px 0;font-size:13px">Selecione uma seção para ver o preview</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Toast container -->
+<!-- v2.1 - cache bust -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ============================================================
+// COSMOPOLÍTICAS CMS PRO — Complete Rewrite
+// ============================================================
+const STORAGE_KEY = 'cosmopoliticas-cms-v2';
+const ASSET_FOLDERS = ['midias','feed','stories','parceiros','logo','videos'];
+const COLORS = {terra:'#9C271E',luz:'#F39227',raiz:'#294902',dourado:'#C4AA3C'};
+const ICONS = {
+  building:'<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>',
+  document:'<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
+  book:'<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>',
+  network:'<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>',
+  layers:'<svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.18L17.5 8 12 11.82 6.5 8 12 4.18z"/></svg>',
+  eye:'<svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a3 3 0 110 6 3 3 0 010-6zm0 14.2a7.2 7.2 0 01-6-3.22c.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08a7.2 7.2 0 01-6 3.22z"/></svg>',
+  people:'<svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h2v-2a2 2 0 012-2h8a2 2 0 012 2v2h2zm-4-6a6 6 0 100-12 6 6 0 000 12zm6 6v-2a4 4 0 00-3-3.87A6.01 6.01 0 0115 11a6 6 0 016 6 4 4 0 002 3.87V21h-4z"/></svg>'
+};
+
+// ---- STATE ----
+const S = {
+  content: null,
+  original: null,
+  assets: {},
+  section: null,
+  history: [],
+  histIdx: -1,
+  maxHist: 50,
+  dirtyPaths: new Set(),
+  autosaveId: null,
+  currentTab: 'visual'
+};
+
+// ---- SECTION DEFINITIONS ----
+const SECTIONS = [
+  {key:'site',name:'Configurações do site',icon:'⚙️',group:'main',desc:'Título, descrição, redes sociais e formulário'},
+  {key:'navbar',name:'Menu de navegação',icon:'🔗',group:'main',desc:'Links do menu, logo e marca'},
+  {key:'hero',name:'Capa / Hero',icon:'🎬',group:'main',desc:'Título principal, subtítulo, botão e vídeo'},
+  {key:'quem_somos',name:'Quem Somos',icon:'🌿',group:'main',desc:'Textos, citação, histórias e pilares'},
+  {key:'o_que_fazemos',name:'O Que Fazemos',icon:'🛠️',group:'main',desc:'Serviços: assessoria, advocacy, formação, rede'},
+  {key:'lutas',name:'Lutas & Territórios',icon:'✊',group:'main',desc:'Galeria de fotos das ações'},
+  {key:'galeria',name:'Galeria de Mídia',icon:'🎥',group:'main',desc:'Vídeos e Abolition Day'},
+  {key:'parceiros',name:'Parceiros',icon:'🤝',group:'main',desc:'Posts e stories de parceiros'},
+  {key:'contato',name:'Contato',icon:'✉️',group:'main',desc:'Formulário, labels e mensagens'},
+  {key:'campaigns',name:'Campanhas',icon:'📢',group:'campaigns',desc:'Página de campanhas: hero, minuta, deputados'}
+];
+
+// ---- HELPERS ----
+function $(s){ return document.querySelector(s); }
+function $$(s){ return document.querySelectorAll(s); }
+function esc(s){
+  var str = (s !== null && s !== undefined) ? String(s) : '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function slugify(fn){
+  // Preserva maiúsculas/minúsculas, só remove caracteres especiais
+  return fn.replace(/[^a-zA-Z0-9._-]/g,'-').replace(/-{2,}/g,'-').replace(/^-|-$/g,'');
+}
+function getFolder(path){
+  if(!path) return 'midias';
+  for(var i=0;i<ASSET_FOLDERS.length;i++){ if(path.indexOf('/'+ASSET_FOLDERS[i]+'/')!==-1) return ASSET_FOLDERS[i]; }
+  return 'midias';
+}
+function deepGet(o, p){
+  var keys = p.split('.');
+  var cur = o;
+  for(var i=0;i<keys.length;i++){ if(cur==null) return undefined; cur = cur[keys[i]]; }
+  return cur;
+}
+function deepSet(o, p, v){
+  var keys = p.split('.');
+  var cur = o;
+  for(var i=0;i<keys.length-1;i++){
+    if(cur[keys[i]]==null || typeof cur[keys[i]]!=='object') cur[keys[i]] = {};
+    cur = cur[keys[i]];
+  }
+  cur[keys[keys.length-1]] = v;
+}
+function clone(o){ try{ return JSON.parse(JSON.stringify(o)); } catch(e){ return o; } }
+function isImgPath(v){ return typeof v==='string' && /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(v); }
+function isVideoPath(v){ return typeof v==='string' && /\.(mp4|webm|ogg)$/i.test(v); }
+function isMediaPath(v){ return isImgPath(v)||isVideoPath(v); }
+function fmtKey(k){ return k.replace(/_/g,' ').replace(/^./,function(s){return s.toUpperCase();}); }
+
+// ---- TOAST ----
+function toast(msg, type='info'){
+  console.log('[CMS] toast ['+type+']:', msg);
+  const container = $('#toastContainer');
+  if(!container) return;
+  const t = document.createElement('div');
+  t.className = 'toast '+type;
+  t.textContent = msg;
+  container.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';setTimeout(()=>t.remove(),200)},4000);
+}
+
+// ---- UNDO BAR ----
+function showUndo(){
+  const existing = document.querySelector('.undo-bar');
+  if(existing) existing.remove();
+  const bar = document.createElement('div');
+  bar.className = 'undo-bar';
+  bar.innerHTML = `<span>Alteração salva</span><button id="undoBtnBar" class="btn btn-accent btn-sm">↩ Desfazer</button><button id="dismissUndo" class="btn btn-ghost btn-sm">✕</button>`;
+  document.body.appendChild(bar);
+  bar.querySelector('#undoBtnBar').onclick = ()=>{undo();bar.remove()};
+  bar.querySelector('#dismissUndo').onclick = ()=>bar.remove();
+  setTimeout(()=>{if(bar.parentNode)bar.remove()},8000);
+}
+
+// ---- HISTORY ----
+function pushHistory(){
+  const snap = clone(S.content);
+  S.history = S.history.slice(0, S.histIdx+1);
+  S.history.push(snap);
+  if(S.history.length > S.maxHist) S.history.shift();
+  S.histIdx = S.history.length - 1;
+}
+function undo(){
+  if(S.histIdx <= 0){toast('Nada para desfazer','info');return;}
+  S.histIdx--;
+  S.content = clone(S.history[S.histIdx]);
+  renderCurrentSection();
+  toast('Alteração desfeita','info');
+}
+
+// ---- MARK DIRTY ----
+function markDirty(path){
+  S.dirtyPaths.add(path?.split('.')?.[0]||'');
+  updateNav();
+  updateChips();
+}
+
+// ---- UPDATE UI ----
+function updateChips(){
+  const dc = S.dirtyPaths.size;
+  const chipSave = $('#chipSave');
+  const chipChanges = $('#chipChanges');
+  if(chipSave){
+    chipSave.textContent = dc>0?'Alterações':'Pronto';
+    chipSave.className = dc>0?'chip warn':'chip ok';
+  }
+  if(chipChanges){
+    chipChanges.textContent = dc+' mudan'+(dc!==1?'ças':'ça');
+    chipChanges.className = dc>0?'chip warn':'chip';
+  }
+}
+
+function updateNav(){
+  const q = $('#sectionSearch').value.toLowerCase();
+  const main = SECTIONS.filter(s=>s.group==='main'&&s.name.toLowerCase().includes(q));
+  const camp = SECTIONS.filter(s=>s.group==='campaigns'&&s.name.toLowerCase().includes(q));
+  $('#navMain').innerHTML = main.map(s=>navItem(s)).join('');
+  $('#navCampaigns').innerHTML = camp.map(s=>navItem(s)).join('');
+  if(!camp.length) $('#navCampaigns').previousElementSibling?.classList.add('hidden');
+  if(!camp.length) $('#navCampaigns').classList.add('hidden');
+  else {$('#navCampaigns').previousElementSibling?.classList.remove('hidden');$('#navCampaigns').classList.remove('hidden');}
+  $$('.section-nav-item').forEach(el=>{
+    el.addEventListener('click',()=>selectSection(el.dataset.key));
+  });
+}
+
+function navItem(s){
+  var active = S.section===s.key?'active':'';
+  var modified = S.dirtyPaths.has(s.key)?'modified':'';
+  var badge = '';
+  if(S.content && S.content[s.key]){
+    badge = typeof S.content[s.key]==='object' ? Object.keys(S.content[s.key]).length+' campos' : '1 campo';
+  }
+  var badgeHtml = badge ? '<span class="badge">'+esc(badge)+'</span>' : '';
+  return '<div class="section-nav-item '+active+' '+modified+'" data-key="'+esc(s.key)+'"><div class="icon">'+esc(s.icon)+'</div><span class="name">'+esc(s.name)+'</span>'+badgeHtml+'</div>';
+}
+
+// ---- LOAD CONTENT ----
+function loadContent(data){
+  try{
+    console.log('[CMS] loadContent called with', Object.keys(data||{}), 'sections');
+    S.original = clone(data);
+    S.content = clone(data);
+    S.assets = {};
+    S.history = [];
+    S.histIdx = -1;
+    S.dirtyPaths = new Set();
+    pushHistory();
+    updateNav();
+    updateChips();
+    startAutosave();
+    $('#chipSave').textContent = 'Carregado';
+    $('#chipSave').className = 'chip ok';
+    toast('Conteúdo carregado com sucesso!','success');
+
+    // Auto-select first section
+    if(!S.section && data) selectSection(Object.keys(data)[0]);
+    if($('#welcomePanel')) $('#welcomePanel').classList.add('hidden');
+    if($('#editorContent')) $('#editorContent').classList.remove('hidden');
+    if($('#rawPanel')) $('#rawPanel').classList.remove('hidden');
+    if($('#toolbarActions')) $('#toolbarActions').style.display = 'flex';
+    console.log('[CMS] loadContent done');
+  }catch(e){
+    console.error('[CMS] loadContent ERROR:', e);
+    toast('Erro ao carregar: '+e.message,'error');
+  }
+}
+
+// ---- SELECT SECTION ----
+function selectSection(key){
+  console.log('[CMS] selectSection:', key);
+  S.section = key;
+  const def = SECTIONS.find(s=>s.key===key);
+  if($('#editorTitle')) $('#editorTitle').textContent = def?def.name:key;
+  if($('#editorDesc')) $('#editorDesc').textContent = def?def.desc:'';
+  try{
+    renderCurrentSection();
+    updateNav();
+    updatePreview();
+    refreshRawJson();
+  }catch(e){
+    console.error('[CMS] selectSection ERROR:', e);
+    toast('Erro ao renderizar seção: '+e.message,'error');
+  }
+}
+
+function renderCurrentSection(){
+  if(!S.section||!S.content){if($('#editorContent'))$('#editorContent').innerHTML='';return;}
+  const editor = $('#editorContent');
+  if(!editor) return;
+  const renderer = renderers[S.section];
+  console.log('[CMS] renderCurrentSection:', S.section, 'renderer:', !!renderer);
+  if(renderer){
+    editor.innerHTML = '';
+    try{
+      renderer(editor);
+    }catch(e){
+      console.error('[CMS] renderer ERROR for', S.section, e);
+      editor.innerHTML = '<div class="card"><div class="card-title">Erro ao renderizar</div><p style="color:var(--cmsMuted);font-size:13px">'+esc(e.message)+'</p><p style="font-size:12px;color:var(--cmsMuted);margin-top:8px">Use a aba "JSON bruto" para editar.</p></div>';
+    }
+  } else {
+    editor.innerHTML = '<div class="card"><div class="card-title">Seção simples</div><p style="color:var(--cmsMuted);font-size:13px">Editor visual não disponível. Use o JSON bruto.</p></div>';
+  }
+  try{bindSortableLists();}catch(e){console.error('[CMS] bindSortableLists ERROR:',e)}
+}
+
+// ---- AUTO-SAVE ----
+function startAutosave(){
+  if(S.autosaveId) clearInterval(S.autosaveId);
+  S.autosaveId = setInterval(()=>{
+    if(S.content){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(S.content));
+      $('#chipSave').textContent = 'Salvo '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      $('#chipSave').className = 'chip ok';
+    }
+  },10000);
+}
+function saveNow(){
+  if(!S.content){toast('Nada para salvar','error');return;}
+  pushHistory();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(S.content));
+  $('#chipSave').textContent = 'Salvo '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  $('#chipSave').className = 'chip ok';
+  toast('Rascunho salvo!','success');
+  showUndo();
+}
+
+// ---- FILE HANDLING ----
+function loadFromFile(file){
+  console.log('[CMS] loadFromFile called with:', file.name);
+  if(!file){toast('Nenhum arquivo selecionado','error');return;}
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    try{
+      console.log('[CMS] File read, size:', e.target.result.length);
+      const data = JSON.parse(e.target.result);
+      console.log('[CMS] JSON parsed, sections:', Object.keys(data));
+      loadContent(data);
+    }catch(err){
+      console.error('[CMS] JSON parse error:', err);
+      toast('Erro ao ler JSON: '+err.message,'error');
+    }
+  };
+  reader.onerror = ()=>{toast('Erro ao ler o arquivo','error');};
+  reader.readAsText(file);
+}
+
+// ---- PREVIEW ----
+function updatePreview(){
+  if(!S.section||!S.content){$('#previewInner').innerHTML='<div style="text-align:center;color:var(--cmsMuted);padding:40px 0;font-size:13px">Selecione uma seção</div>';return;}
+  const pv = previews[S.section];
+  if(pv){
+    var secName = SECTIONS.find(function(s){return s.key===S.section;});
+    $('#previewInner').innerHTML = '<div class="preview-label">'+(secName?secName.name:S.section)+'</div>' + pv(S.content[S.section]);
+  } else {
+    const d = S.content[S.section];
+    var pvHtml = typeof d==='object'?'<pre style="font-size:11px;color:var(--cmsMuted);white-space:pre-wrap;overflow:auto;max-height:400px">'+esc(JSON.stringify(d,null,2))+'</pre>':'<p>'+esc(String(d))+'</p>';
+    $('#previewInner').innerHTML = '<div class="preview-label">'+S.section+'</div>'+pvHtml;
+  }
+}
+
+// ---- FIELD BUILDER ----
+function field(label, hint, type, attrs={}){
+  const d = document.createElement('div');
+  d.className = 'field';
+  let input;
+  if(type==='textarea'){
+    input = document.createElement('textarea');
+    input.className = 'textarea';
+    input.rows = attrs.rows||3;
+  } else if(type==='select'){
+    input = document.createElement('select');
+    input.className = 'select';
+    (attrs.options||[]).forEach(o=>{
+      const opt = document.createElement('option');
+      opt.value = o.value; opt.textContent = o.label;
+      if(o.selected) opt.selected = true;
+      input.appendChild(opt);
+    });
+  } else if(type==='toggle'){
+    const wrap = document.createElement('div');
+    wrap.style.display = 'flex';
+    wrap.style.alignItems = 'center';
+    wrap.style.gap = '10px';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.style.width = '18px';
+    cb.style.height = '18px';
+    cb.style.accentColor = '#F39227';
+    cb.checked = attrs.checked||false;
+    const lbl = document.createElement('span');
+    lbl.style.fontSize = '13px';
+    lbl.textContent = attrs.toggleLabel||'Ativado';
+    wrap.appendChild(cb);
+    wrap.appendChild(lbl);
+    input = wrap;
+    input._cb = cb;
+  } else {
+    input = document.createElement('input');
+    input.type = attrs.inputType||'text';
+    input.className = 'input';
+  }
+  if(attrs.value!==undefined) input.value = input._cb?(input._cb.checked=attrs.value,attrs.value):attrs.value;
+  if(attrs.placeholder) input.placeholder = attrs.placeholder;
+  const l = document.createElement('label');
+  l.className = 'label';
+  l.textContent = label;
+  d.appendChild(l);
+  d.appendChild(input);
+  if(hint){const h=document.createElement('div');h.className='label-hint';h.textContent=hint;d.appendChild(h);}
+  d._input = input;
+  d._cb = input._cb||null;
+  return d;
+}
+
+function bindField(d, path, cb){
+  const inp = d._input;
+  const cbox = d._cb;
+  const evt = (inp.type==='checkbox')?'change':'input';
+  const handler = ()=>{
+    const val = cbox?cbox.checked:inp.value;
+    deepSet(S.content, path, val);
+    markDirty(path);
+    updatePreview();
+    if(cb) cb(val);
+  };
+  inp.addEventListener(evt, handler);
+  if(inp.tagName==='SELECT') inp.addEventListener('change', handler);
+  if(inp._cb) inp._cb.addEventListener('change', handler);
+}
+
+function imageUpload(label, hint, path, attrs={}){
+  const d = document.createElement('div');
+  d.className = 'field';
+  const currentVal = deepGet(S.content, path)||'';
+  const folder = getFolder(currentVal);
+  const isImg = isImgPath(currentVal);
+  const isVid = isVideoPath(currentVal);
+
+  const l = document.createElement('label');
+  l.className = 'label';
+  l.textContent = label;
+  d.appendChild(l);
+
+  const zone = document.createElement('div');
+  zone.className = 'img-upload'+(currentVal?' has-image':'');
+  zone.dataset.path = path;
+  zone.dataset.folder = folder;
+
+  if(currentVal && isImg){
+    const img = document.createElement('img');
+    img.src = currentVal;
+    img.alt = 'Preview';
+    img.onerror = ()=>{img.style.display='none'};
+    zone.appendChild(img);
+  } else if(currentVal && isVid){
+    const vid = document.createElement('video');
+    vid.src = currentVal;
+    vid.style.cssText = 'width:100%;max-height:180px;display:block;background:#000';
+    vid.muted = true;
+    vid.style.objectFit = 'cover';
+    zone.appendChild(vid);
+    const playBtn = document.createElement('div');
+    playBtn.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer';
+    playBtn.innerHTML = '<svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    playBtn.onclick = (e)=>{e.stopPropagation();vid.paused?vid.play():vid.pause()};
+    zone.appendChild(playBtn);
+  } else {
+    zone.innerHTML = `<div class="upload-placeholder"><svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Clique ou arraste uma imagem</span></div>`;
+  }
+
+  // Actions overlay
+  const act = document.createElement('div');
+  act.className = 'upload-actions';
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'btn-icon danger';
+  removeBtn.innerHTML = '✕';
+  removeBtn.title = 'Remover imagem';
+  removeBtn.onclick = (e)=>{e.stopPropagation();deepSet(S.content,path,'');zone.classList.remove('has-image');zone.innerHTML='<div class="upload-placeholder"><svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Clique ou arraste uma imagem</span></div>';zone.appendChild(act);zone.appendChild(fileInput2);markDirty(path);updatePreview();};
+  act.appendChild(removeBtn);
+  zone.appendChild(act);
+
+  // File input
+  const fileInput2 = document.createElement('input');
+  fileInput2.type = 'file';
+  fileInput2.accept = isVid?'video/*':(attrs.accept||'image/*');
+  fileInput2.style.display = 'none';
+  zone.appendChild(fileInput2);
+
+  zone.onclick = ()=>fileInput2.click();
+  zone.ondragover = (e)=>{e.preventDefault();zone.classList.add('dragover')};
+  zone.ondragleave = ()=>zone.classList.remove('dragover');
+  zone.ondrop = (e)=>{e.preventDefault();zone.classList.remove('dragover');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0],path,zone)};
+  fileInput2.onchange = ()=>{if(fileInput2.files[0])handleFile(fileInput2.files[0],path,zone)};
+
+  d.appendChild(zone);
+  if(hint){const h=document.createElement('div');h.className='label-hint';h.textContent=hint;d.appendChild(h);}
+  return d;
+}
+
+function handleFile(file, path, zone){
+  const cleanName = slugify(file.name);
+  const folder = zone.dataset.folder || getFolder(deepGet(S.content,path)) || 'midias';
+  var newPath = 'assets/'+folder+'/'+cleanName;
+  S.assets[newPath] = file;
+  deepSet(S.content, path, newPath);
+  markDirty(path);
+  updateChips();
+  updatePreview();
+
+  // Update zone to show image
+  zone.classList.add('has-image');
+  const oldImg = zone.querySelector('img');
+  if(oldImg) oldImg.remove();
+  if(isImgPath(newPath)){
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.alt = 'Preview';
+    zone.insertBefore(img, zone.firstChild);
+  }
+  const info = document.createElement('div');
+  info.className = 'file-info';
+  info.innerHTML = '<code>'+esc(newPath)+'</code>';
+  zone.appendChild(info);
+  toast('"'+cleanName+'" adicionado → '+newPath,'success');
+}
+
+function listEditor(label, hint, itemsPath, itemBuilder, newItemDefault, addLabel){
+  const d = document.createElement('div');
+  const l = document.createElement('label');
+  l.className = 'label';
+  l.textContent = label;
+  d.appendChild(l);
+  if(hint){const h=document.createElement('div');h.className='label-hint';h.textContent=hint;d.appendChild(h);}
+  const container = document.createElement('div');
+  container.className = 'list-container';
+  container.dataset.listPath = itemsPath;
+  d.appendChild(container);
+
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-btn';
+  addBtn.innerHTML = '+ '+(addLabel||'Adicionar');
+  addBtn.onclick = ()=>{
+    pushHistory();
+    const arr = deepGet(S.content, itemsPath);
+    if(!Array.isArray(arr)) deepSet(S.content, itemsPath, []);
+    deepGet(S.content, itemsPath).push(clone(newItemDefault||{}));
+    renderList(container, itemsPath, itemBuilder);
+    markDirty(itemsPath);
+    updatePreview();
+    toast('Item adicionado','success');
+  };
+  d.appendChild(addBtn);
+
+  renderList(container, itemsPath, itemBuilder);
+  return d;
+}
+
+function renderList(container, path, itemBuilder){
+  const items = deepGet(S.content, path) || [];
+  container.innerHTML = '';
+  if(!items.length){container.innerHTML='<div class="empty-state">Nenhum item ainda. Clique em "+" para adicionar.</div>';return;}
+  items.forEach((item, i)=>{
+    const card = document.createElement('div');
+    card.className = 'list-item';
+    card.dataset.index = i;
+    const header = document.createElement('div');
+    header.className = 'list-item-header';
+    var title = (itemBuilder && itemBuilder.getTitle) ? itemBuilder.getTitle(item,i) : ('Item '+(i+1));
+    header.innerHTML = '<div style="display:flex;align-items:center;gap:8px"><span class="drag-handle">⠿</span><span class="list-item-title">'+esc(title)+'</span></div>';
+    const actions = document.createElement('div');
+    actions.className = 'list-item-actions';
+    const moveUp = document.createElement('button');
+    moveUp.className = 'btn-icon';
+    moveUp.innerHTML = '↑';
+    moveUp.onclick = ()=>{pushHistory();const a=deepGet(S.content,path);if(i>0){[a[i-1],a[i]]=[a[i],a[i-1]];renderList(container,path,itemBuilder);markDirty(path);updatePreview()}};
+    const moveDown = document.createElement('button');
+    moveDown.className = 'btn-icon';
+    moveDown.innerHTML = '↓';
+    moveDown.onclick = ()=>{pushHistory();const a=deepGet(S.content,path);if(i<a.length-1){[a[i],a[i+1]]=[a[i+1],a[i]];renderList(container,path,itemBuilder);markDirty(path);updatePreview()}};
+    const dup = document.createElement('button');
+    dup.className = 'btn-icon';
+    dup.innerHTML = '⧉';
+    dup.title = 'Duplicar';
+    dup.onclick = ()=>{pushHistory();const a=deepGet(S.content,path);a.splice(i+1,0,clone(item));renderList(container,path,itemBuilder);markDirty(path);updatePreview();toast('Item duplicado','info')};
+    const del = document.createElement('button');
+    del.className = 'btn-icon danger';
+    del.innerHTML = '✕';
+    del.onclick = ()=>{pushHistory();const a=deepGet(S.content,path);a.splice(i,1);renderList(container,path,itemBuilder);markDirty(path);updatePreview();toast('Item removido','info')};
+    actions.appendChild(moveUp);
+    actions.appendChild(moveDown);
+    actions.appendChild(dup);
+    actions.appendChild(del);
+    header.appendChild(actions);
+    card.appendChild(header);
+    const body = document.createElement('div');
+    body.className = 'list-item-body';
+    if(itemBuilder?.build) itemBuilder.build(item, i, body, path);
+    card.appendChild(body);
+    container.appendChild(card);
+  });
+}
+
+function bindSortableLists(){
+  $$('[data-list-path]').forEach(el=>{
+    new Sortable(el, {
+      handle: '.drag-handle',
+      animation: 150,
+      ghostClass: 'dragging',
+      onEnd: ({newIndex, oldIndex})=>{
+        pushHistory();
+        const path = el.dataset.listPath;
+        const arr = deepGet(S.content, path);
+        if(arr && arr.length){
+          const [item] = arr.splice(oldIndex, 1);
+          arr.splice(newIndex, 0, item);
+          markDirty(path);
+          updatePreview();
+          toast('Ordem atualizada','info');
+        }
+      }
+    });
+  });
+}
+
+// ---- RENDERERS ----
+const renderers = {};
+const previews = {};
+
+// SITE
+renderers.site = (container)=>{
+  container.appendChild(field('Título do site','Aparece na aba do navegador e no SEO','input',{value:deepGet(S.content,'site.title')}));
+  bindField(container.lastChild,'site.title',()=>updatePreview());
+
+  container.appendChild(field('Descrição (meta)','Texto que aparece nos resultados de busca','textarea',{value:deepGet(S.content,'site.description'),rows:3}));
+  bindField(container.lastChild,'site.description',()=>updatePreview());
+
+  container.appendChild(field('Texto do rodapé','Aparece no rodapé do site antes do ano','input',{value:deepGet(S.content,'site.footer_year_prefix')}));
+  bindField(container.lastChild,'site.footer_year_prefix',()=>updatePreview());
+
+  const social = document.createElement('div');
+  social.className = 'card';
+  social.innerHTML = '<div class="card-title">Redes sociais</div>';
+  social.appendChild(field('Instagram URL','','input',{value:deepGet(S.content,'site.social.instagram'),placeholder:'https://instagram.com/...'}));
+  bindField(social.lastChild,'site.social.instagram');
+  social.appendChild(field('Email de contato','','input',{value:deepGet(S.content,'site.social.email'),placeholder:'contato@...'}));
+  bindField(social.lastChild,'site.social.email');
+  container.appendChild(social);
+
+  const form = document.createElement('div');
+  form.className = 'card';
+  form.innerHTML = '<div class="card-title">Formulário de contato</div>';
+  form.appendChild(field('Endpoint do formulário','URL para onde o form envia os dados (ex: FormSubmit)','input',{value:deepGet(S.content,'site.form.submit_endpoint')}));
+  bindField(form.lastChild,'site.form.submit_endpoint');
+  container.appendChild(form);
+};
+previews.site = (d)=>{var des=esc(d?.description||'');return '<div style="padding:4px 0"><strong style="font-size:16px">'+esc(d?.title||'')+'</strong><p style="color:var(--cmsMuted);font-size:12px;margin:4px 0">'+des.substring(0,120)+(des.length>120?'...':'')+'</p></div>';};
+
+// NAVBAR
+renderers.navbar = (container)=>{
+  container.appendChild(field('Nome da marca','Texto ao lado do logo no menu','input',{value:deepGet(S.content,'navbar.brand')}));
+  bindField(container.lastChild,'navbar.brand');
+  container.appendChild(imageUpload('Logo do menu','Aparece no canto superior esquerdo','navbar.logo'));
+
+  container.appendChild(listEditor(
+    'Links do menu',
+    'Ordem dos links na barra de navegação',
+    'navbar.links',
+    {
+      getTitle:(item,i)=>item.label||('Link '+(i+1)),
+      build:(item,i,body,path)=>{
+        const f1 = field('Texto do link','','input',{value:item.label||''});
+        bindField(f1,path+'['+i+'].label',()=>updatePreview());
+        body.appendChild(f1);
+        const f2 = field('URL / Âncora','','input',{value:item.href||'',placeholder:'#quem-somos ou campaigns.html'});
+        bindField(f2,path+'['+i+'].href',()=>updatePreview());
+        body.appendChild(f2);
+        const f3 = field('É botão destacado (CTA)?','Links com cta=true viram botões vermelhos','toggle',{checked:item.cta||false, toggleLabel:'Destacar como botão'});
+        bindField(f3,path+'['+i+'].cta',()=>updatePreview());
+        body.appendChild(f3);
+      }
+    },
+    {label:'',href:'',cta:false},
+    'Adicionar link'
+  ));
+};
+previews.navbar = (d)=>{var h='<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 0"><span style="display:flex;align-items:center;gap:6px"><span style="width:20px;height:20px;border-radius:4px;background:linear-gradient(135deg,#9C271E,#F39227)"></span><span style="font-weight:700">'+esc(d?.brand||'')+'</span></span>'+(d?.links||[]).map(function(l){return l.cta?'<span style="background:#9C271E;color:#fff;padding:3px 10px;border-radius:999px;font-size:11px">'+esc(l.label)+'</span>':'<span style="color:var(--cmsMuted);font-size:11px">'+esc(l.label)+'</span>';}).join('')+'</div>';return h;};
+
+// HERO
+renderers.hero = (container)=>{
+  container.appendChild(imageUpload('Logo do Hero','Logo grande centralizado na capa','hero.logo'));
+
+  const headline = document.createElement('div');
+  headline.className = 'card';
+  headline.innerHTML = '<div class="card-title">Título principal (Headline)</div><p style="color:var(--cmsMuted);font-size:12px;margin:0 0 12px">O título é montado em 4 partes. O preview abaixo mostra como fica:</p>';
+
+  const previewBox = document.createElement('div');
+  previewBox.style.cssText = 'background:#1F0032;border:1px solid var(--cmsBorder);border-radius:12px;padding:20px;margin-bottom:14px;text-align:center';
+  previewBox.innerHTML = '<div style="font-size:28px;line-height:1.3"><span id="hlPrefix" style="font-size:28px">'+esc(deepGet(S.content,'hero.headline.prefix'))+'</span> <span id="hlWord1" style="color:#F39227;font-style:italic">'+esc(deepGet(S.content,'hero.headline.word1'))+'</span> <span>'+esc(deepGet(S.content,'hero.headline.connector'))+'</span> <span id="hlWord2" style="color:#9C271E;font-style:italic">'+esc(deepGet(S.content,'hero.headline.word2'))+'</span></div>';
+  headline.appendChild(previewBox);
+
+  const f1 = field('Palavra inicial','Ex: "o"','input',{value:deepGet(S.content,'hero.headline.prefix')});
+  bindField(f1,'hero.headline.prefix',()=>{document.getElementById('hlPrefix')&&(document.getElementById('hlPrefix').textContent=f1._input.value)});
+  headline.appendChild(f1);
+
+  const f2 = field('Palavra destacada 1','Fica em itálico laranja. Ex: "outras"','input',{value:deepGet(S.content,'hero.headline.word1')});
+  bindField(f2,'hero.headline.word1',()=>{document.getElementById('hlWord1')&&(document.getElementById('hlWord1').textContent=f2._input.value)});
+  headline.appendChild(f2);
+
+  const f3 = field('Conector','Texto normal entre as palavras. Ex: "formas de fazer"','input',{value:deepGet(S.content,'hero.headline.connector')});
+  bindField(f3,'hero.headline.connector');
+  headline.appendChild(f3);
+
+  const f4 = field('Palavra destacada 2','Fica em itálico vermelho. Ex: "política"','input',{value:deepGet(S.content,'hero.headline.word2')});
+  bindField(f4,'hero.headline.word2',()=>{document.getElementById('hlWord2')&&(document.getElementById('hlWord2').textContent=f4._input.value)});
+  headline.appendChild(f4);
+
+  container.appendChild(headline);
+
+  container.appendChild(field('Subtítulo','Texto abaixo do título principal','textarea',{value:deepGet(S.content,'hero.subtitle'),rows:2}));
+  bindField(container.lastChild,'hero.subtitle',()=>updatePreview());
+
+  container.appendChild(field('Texto do botão (CTA)','Texto do botão principal da capa','input',{value:deepGet(S.content,'hero.cta_text')}));
+  bindField(container.lastChild,'hero.cta_text',()=>updatePreview());
+
+  container.appendChild(imageUpload('Vídeo de fundo','Vídeo que toca na capa (MP4)','hero.video',{accept:'video/*'}));
+};
+previews.hero = (d)=>{var h='<div style="text-align:center;padding:16px 0"><div style="font-size:22px;line-height:1.4;margin-bottom:8px"><span>'+esc(d?.headline?.prefix||'')+'</span> <span style="color:#F39227;font-style:italic">'+esc(d?.headline?.word1||'')+'</span> <span>'+esc(d?.headline?.connector||'')+'</span> <span style="color:#9C271E;font-style:italic">'+esc(d?.headline?.word2||'')+'</span></div><p style="color:var(--cmsMuted);font-size:12px">'+esc(d?.subtitle||'')+'</p><div style="margin-top:12px"><span style="display:inline-block;background:#9C271E;color:#fff;padding:8px 20px;border-radius:999px;font-size:12px;font-weight:600">'+esc(d?.cta_text||'')+'</span></div></div>';return h;};
+
+// QUEM SOMOS
+renderers.quem_somos = (container)=>{
+  container.appendChild(field('Tag','Texto pequeno acima do título','input',{value:deepGet(S.content,'quem_somos.tag')}));
+  bindField(container.lastChild,'quem_somos.tag');
+  container.appendChild(field('Título','','input',{value:deepGet(S.content,'quem_somos.title')}));
+  bindField(container.lastChild,'quem_somos.title');
+  container.appendChild(field('Parágrafo introdutório','Primeiro parágrafo — a primeira letra fica em destaque (drop cap)','textarea',{value:deepGet(S.content,'quem_somos.intro_paragraph'),rows:4}));
+  bindField(container.lastChild,'quem_somos.intro_paragraph',()=>updatePreview());
+  container.appendChild(field('Parágrafo de detalhes','Segundo parágrafo de texto','textarea',{value:deepGet(S.content,'quem_somos.details_paragraph'),rows:3}));
+  bindField(container.lastChild,'quem_somos.details_paragraph');
+  container.appendChild(imageUpload('Imagem principal','Imagem ao lado do texto','quem_somos.image'));
+
+  const quote = document.createElement('div');
+  quote.className = 'card';
+  quote.innerHTML = '<div class="card-title">Citação</div>';
+  quote.appendChild(field('Texto da citação','','textarea',{value:deepGet(S.content,'quem_somos.quote.text'),rows:3}));
+  bindField(quote.lastChild,'quem_somos.quote.text');
+  quote.appendChild(field('Autor','','input',{value:deepGet(S.content,'quem_somos.quote.author')}));
+  bindField(quote.lastChild,'quem_somos.quote.author');
+  container.appendChild(quote);
+
+  container.appendChild(field('Título das histórias','Texto acima do carrossel de stories','input',{value:deepGet(S.content,'quem_somos.stories_title')}));
+  bindField(container.lastChild,'quem_somos.stories_title');
+
+  container.appendChild(listEditor(
+    'Histórias (stories)','Imagens em formato story (vertical) que rolam horizontalmente','quem_somos.stories',
+    {
+      getTitle:(item,i)=>item.alt||('Story '+(i+1)),
+      build:(item,i,body,path)=>{
+        body.appendChild(imageUpload('Imagem do story','',`path+'['+i+'].src`));
+        const f = field('Descrição (alt text)','Texto alternativo para acessibilidade','input',{value:item.alt||''});
+        bindField(f,`path+'['+i+'].alt`);
+        body.appendChild(f);
+      }
+    },
+    {src:'',alt:'Story'},
+    'Adicionar story'
+  ));
+
+  container.appendChild(listEditor(
+    'Pilares','Os 3 pilares da rede: raiz, luz e terra',
+    'quem_somos.pillars',
+    {
+      getTitle:(item,i)=>'● '+(item.name||('Pilar '+(i+1))),
+      build:(item,i,body,path)=>{
+        const f1 = field('Nome','','input',{value:item.name||''});
+        bindField(f1,`path+'['+i+'].name`);
+        body.appendChild(f1);
+        const f2 = field('Descrição','','input',{value:item.description||''});
+        bindField(f2,`path+'['+i+'].description`);
+        body.appendChild(f2);
+        const f3 = field('Cor','','select',{options:[
+          {value:'raiz',label:'🟢 Raiz (verde)'},
+          {value:'luz',label:'🟠 Luz (laranja)'},
+          {value:'terra',label:'🔴 Terra (vermelho)'}
+        ]});
+        f3._input.value = item.color||'raiz';
+        bindField(f3,`path+'['+i+'].color`);
+        body.appendChild(f3);
+        const f4 = field('Ícone','','select',{options:[
+          {value:'layers',label:'◆ Camadas (raiz)'},
+          {value:'eye',label:'👁 Olho (luz)'},
+          {value:'people',label:'👥 Pessoas (terra)'}
+        ]});
+        f4._input.value = item.icon||'layers';
+        bindField(f4,`path+'['+i+'].icon`);
+        body.appendChild(f4);
+      }
+    },
+    {name:'',description:'',color:'raiz',icon:'layers'},
+    'Adicionar pilar'
+  ));
+};
+previews.quem_somos = (d)=>{var h='<div style="padding:4px 0"><p style="color:#F39227;font-size:10px;text-transform:uppercase;letter-spacing:.1em">'+esc(d?.tag||'')+'</p><strong style="font-size:18px">'+esc(d?.title||'')+'</strong><p style="color:var(--cmsMuted);font-size:12px;margin:6px 0;line-height:1.5">'+esc(d?.intro_paragraph||'').substring(0,150)+'...</p>';if(d?.quote){h+='<blockquote style="border-left:3px solid #F39227;padding-left:10px;margin:8px 0;font-style:italic;color:var(--cmsMutedLight);font-size:12px">"'+esc(d.quote.text).substring(0,100)+'..."<br><span style="font-style:normal;font-size:11px">— '+esc(d.quote.author)+'</span></blockquote>';}h+='</div>';return h;};
+
+// O QUE FAZEMOS
+renderers.o_que_fazemos = (container)=>{
+  container.appendChild(field('Tag','','input',{value:deepGet(S.content,'o_que_fazemos.tag')}));
+  bindField(container.lastChild,'o_que_fazemos.tag');
+  container.appendChild(field('Título','','input',{value:deepGet(S.content,'o_que_fazemos.title')}));
+  bindField(container.lastChild,'o_que_fazemos.title');
+
+  container.appendChild(listEditor(
+    'Serviços','Os 4 serviços oferecidos',
+    'o_que_fazemos.services',
+    {
+      getTitle:(item,i)=>item.title||('Serviço '+(i+1)),
+      build:(item,i,body,path)=>{
+        const f1 = field('Título do serviço','','input',{value:item.title||''});
+        bindField(f1,`path+'['+i+'].title`);
+        body.appendChild(f1);
+        const f2 = field('Descrição','','textarea',{value:item.description||'',rows:3});
+        bindField(f2,`path+'['+i+'].description`);
+        body.appendChild(f2);
+        const f3 = field('Cor do card','','select',{options:[
+          {value:'terra',label:'🔴 Terra (vermelho)'},
+          {value:'raiz',label:'🟢 Raiz (verde)'},
+          {value:'luz',label:'🟠 Luz (laranja)'},
+          {value:'dourado',label:'🟡 Dourado'}
+        ]});
+        f3._input.value = item.color||'terra';
+        bindField(f3,`path+'['+i+'].color`);
+        body.appendChild(f3);
+        const f4 = field('Ícone','','select',{options:[
+          {value:'building',label:'🏢 Edifício'},
+          {value:'document',label:'📄 Documento'},
+          {value:'book',label:'📖 Livro'},
+          {value:'network',label:'🌐 Rede'}
+        ]});
+        f4._input.value = item.iconKey||'building';
+        bindField(f4,`path+'['+i+'].iconKey`);
+        body.appendChild(f4);
+      }
+    },
+    {title:'',description:'',color:'terra',iconKey:'building'},
+    'Adicionar serviço'
+  ));
+};
+previews.o_que_fazemos = (d)=>{var h='<div style="padding:4px 0"><strong style="font-size:16px">'+esc(d?.title||'')+'</strong>'+(d?.services||[]).map(function(s){return '<div style="margin-top:8px;padding:8px;border-radius:8px;background:rgba(255,255,255,.03);border-left:3px solid '+(COLORS[s.color]||'#666')+'"><span style="font-size:13px;font-weight:600">'+esc(s.title)+'</span><p style="font-size:11px;color:var(--cmsMuted);margin:4px 0 0">'+esc(s.description||'').substring(0,80)+'...</p></div>';}).join('')+'</div>';return h;};
+
+// LUTAS
+renderers.lutas = (container)=>{
+  container.appendChild(field('Tag','','input',{value:deepGet(S.content,'lutas.tag')}));
+  bindField(container.lastChild,'lutas.tag');
+  container.appendChild(field('Título','','input',{value:deepGet(S.content,'lutas.title')}));
+  bindField(container.lastChild,'lutas.title');
+  container.appendChild(field('Subtítulo','','input',{value:deepGet(S.content,'lutas.subtitle')}));
+  bindField(container.lastChild,'lutas.subtitle');
+
+  container.appendChild(listEditor(
+    'Galeria de fotos','Imagens da galeria de lutas e territórios',
+    'lutas.images',
+    {
+      getTitle:(item,i)=>item.alt||('Foto '+(i+1)),
+      build:(item,i,body,path)=>{
+        body.appendChild(imageUpload('Foto','',`path+'['+i+'].src`));
+        const f1 = field('Descrição (alt)','Texto alternativo','input',{value:item.alt||''});
+        bindField(f1,`path+'['+i+'].alt`);
+        body.appendChild(f1);
+        const f2 = field('Formato','','select',{options:[
+          {value:'square',label:'Quadrado (1:1)'},
+          {value:'portrait',label:'Retrato vertical (3:4)'}
+        ]});
+        f2._input.value = item.aspect||'square';
+        bindField(f2,`path+'['+i+'].aspect`);
+        body.appendChild(f2);
+      }
+    },
+    {src:'',alt:'Cosmopolíticas',aspect:'square'},
+    'Adicionar foto'
+  ));
+};
+previews.lutas = (d)=>{var h='<div style="padding:4px 0"><strong style="font-size:16px">'+esc(d?.title||'')+'</strong><p style="font-size:11px;color:var(--cmsMuted)">'+esc(d?.subtitle||'')+'</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:8px">'+(d?.images||[]).map(function(im){var ar=im.aspect==='portrait'?'3/4':'1';var img=isImgPath(im.src)?'<img src="'+esc(im.src)+'" style="width:100%;height:100%;object-fit:cover">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--cmsMuted)">sem img</div>';return '<div style="aspect-ratio:'+ar+';background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden">'+img+'</div>';}).join('')+'</div></div>';return h;};
+
+// GALERIA
+renderers.galeria = (container)=>{
+  container.appendChild(field('Tag','','input',{value:deepGet(S.content,'galeria.tag')}));
+  bindField(container.lastChild,'galeria.tag');
+  container.appendChild(field('Título','','input',{value:deepGet(S.content,'galeria.title')}));
+  bindField(container.lastChild,'galeria.title');
+
+  container.appendChild(listEditor(
+    'Vídeos','Vídeos da galeria com thumbnail e legenda',
+    'galeria.videos',
+    {
+      getTitle:(item,i)=>item.title||('Vídeo '+(i+1)),
+      build:(item,i,body,path)=>{
+        body.appendChild(imageUpload('Vídeo (MP4)','Arquivo de vídeo',`path+'['+i+'].src`,{accept:'video/*'}));
+        body.appendChild(imageUpload('Thumbnail / Capa','Imagem de capa do vídeo',`path+'['+i+'].poster`));
+        const f1 = field('Título','','input',{value:item.title||''});
+        bindField(f1,`path+'['+i+'].title`);
+        body.appendChild(f1);
+        const f2 = field('Descrição','','input',{value:item.description||''});
+        bindField(f2,`path+'['+i+'].description`);
+        body.appendChild(f2);
+      }
+    },
+    {src:'',poster:'',title:'Vídeo',description:''},
+    'Adicionar vídeo'
+  ));
+
+  const ad = document.createElement('div');
+  ad.className = 'card';
+  ad.innerHTML = '<div class="card-title">Abolition Day</div>';
+  ad.appendChild(field('Título','','input',{value:deepGet(S.content,'galeria.abolition_day.title')}));
+  bindField(ad.lastChild,'galeria.abolition_day.title');
+  ad.appendChild(field('Subtítulo','','input',{value:deepGet(S.content,'galeria.abolition_day.subtitle')}));
+  bindField(ad.lastChild,'galeria.abolition_day.subtitle');
+  container.appendChild(ad);
+
+  container.appendChild(listEditor(
+    'Fotos do Abolition Day','','galeria.abolition_day.images',
+    {
+      getTitle:(item,i)=>item.alt||('Foto '+(i+1)),
+      build:(item,i,body,path)=>{
+        body.appendChild(imageUpload('Foto','',`path+'['+i+'].src`));
+        const f = field('Descrição (alt)','','input',{value:item.alt||''});
+        bindField(f,`path+'['+i+'].alt`);
+        body.appendChild(f);
+      }
+    },
+    {src:'',alt:'Abolition Day'},
+    'Adicionar foto'
+  ));
+};
+previews.galeria = (d)=>{var h='<div style="padding:4px 0"><strong style="font-size:16px">'+esc(d?.title||'')+'</strong><div style="display:flex;gap:6px;margin-top:8px">'+(d?.videos||[]).map(function(v){return '<div style="flex:1;aspect-ratio:16/9;background:rgba(255,255,255,.04);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--cmsMuted)">'+esc(v.title)+'</div>';}).join('')+'</div></div>';return h;};
+
+// PARCEIROS
+renderers.parceiros = (container)=>{
+  container.appendChild(field('Tag','','input',{value:deepGet(S.content,'parceiros.tag')}));
+  bindField(container.lastChild,'parceiros.tag');
+  container.appendChild(field('Título','','input',{value:deepGet(S.content,'parceiros.title')}));
+  bindField(container.lastChild,'parceiros.title');
+
+  container.appendChild(listEditor(
+    'Posts dos parceiros','Imagens em formato quadrado (posts do Instagram)',
+    'parceiros.posts',
+    {getTitle:(item,i)=>item.alt||('Post '+(i+1)),
+     build:(item,i,body,path)=>{
+       body.appendChild(imageUpload('Post','',`path+'['+i+'].src`));
+       const f=field('Descrição (alt)','','input',{value:item.alt||''});
+       bindField(f,`path+'['+i+'].alt`);body.appendChild(f);
+     }
+    },{src:'',alt:'Parceiro'},'Adicionar post'
+  ));
+
+  container.appendChild(listEditor(
+    'Stories dos parceiros','Imagens em formato story (vertical)',
+    'parceiros.stories',
+    {getTitle:(item,i)=>item.alt||('Story '+(i+1)),
+     build:(item,i,body,path)=>{
+       body.appendChild(imageUpload('Story','',`path+'['+i+'].src`));
+       const f=field('Descrição (alt)','','input',{value:item.alt||''});
+       bindField(f,`path+'['+i+'].alt`);body.appendChild(f);
+     }
+    },{src:'',alt:'Parceiro Story'},'Adicionar story'
+  ));
+};
+previews.parceiros = (d)=>'<div style="padding:4px 0"><strong style="font-size:16px">'+esc(d?.title||'')+'</strong><p style="font-size:11px;color:var(--cmsMuted)">'+(d?.posts||[]).length+' posts · '+(d?.stories||[]).length+' stories</p></div>';
+
+// CONTATO
+renderers.contato = (container)=>{
+  container.appendChild(field('Tag','','input',{value:deepGet(S.content,'contato.tag')}));
+  bindField(container.lastChild,'contato.tag');
+  container.appendChild(field('Título','','input',{value:deepGet(S.content,'contato.title')}));
+  bindField(container.lastChild,'contato.title');
+  container.appendChild(field('Subtítulo','','input',{value:deepGet(S.content,'contato.subtitle')}));
+  bindField(container.lastChild,'contato.subtitle');
+
+  const formLabels = document.createElement('div');
+  formLabels.className = 'card';
+  formLabels.innerHTML = '<div class="card-title">Labels do formulário</div>';
+  ['name','email','subject','message'].forEach(k=>{
+    const pt = {name:'Nome',email:'Email',subject:'Assunto',message:'Mensagem'};
+    formLabels.appendChild(field('Label: '+pt[k],'','input',{value:deepGet(S.content,'contato.form.labels.'+k)}));
+    bindField(formLabels.lastChild,`contato.form.labels.${k}`);
+  });
+  container.appendChild(formLabels);
+
+  const formPlaceholders = document.createElement('div');
+  formPlaceholders.className = 'card';
+  formPlaceholders.innerHTML = '<div class="card-title">Placeholders (texto de ajuda)</div>';
+  ['name','email','subject','message'].forEach(k=>{
+    formPlaceholders.appendChild(field('Placeholder: '+k,'','input',{value:deepGet(S.content,'contato.form.placeholders.'+k)}));
+    bindField(formPlaceholders.lastChild,`contato.form.placeholders.${k}`);
+  });
+  container.appendChild(formPlaceholders);
+
+  container.appendChild(field('Texto do botão enviar','','input',{value:deepGet(S.content,'contato.form.submit_button')}));
+  bindField(container.lastChild,'contato.form.submit_button');
+
+  const success = document.createElement('div');
+  success.className = 'card';
+  success.innerHTML = '<div class="card-title">Mensagem de sucesso</div>';
+  success.appendChild(field('Título','Aparece após o envio do formulário','input',{value:deepGet(S.content,'contato.success.title')}));
+  bindField(success.lastChild,'contato.success.title');
+  success.appendChild(field('Subtítulo','','input',{value:deepGet(S.content,'contato.success.subtitle')}));
+  bindField(success.lastChild,'contato.success.subtitle');
+  container.appendChild(success);
+
+  container.appendChild(field('Label das redes sociais','','input',{value:deepGet(S.content,'contato.social_label')}));
+  bindField(container.lastChild,'contato.social_label');
+};
+previews.contato = (d)=>'<div style="padding:4px 0"><strong style="font-size:16px">'+esc(d?.title||'')+'</strong><p style="font-size:12px;color:var(--cmsMuted)">'+esc(d?.subtitle||'')+'</p></div>';
+
+// CAMPAIGNS
+renderers.campaigns = (container)=>{
+  container.appendChild(field('Título da página','Aparece na aba do navegador','input',{value:deepGet(S.content,'campaigns.page_title')}));
+  bindField(container.lastChild,'campaigns.page_title');
+
+  const hero = document.createElement('div');
+  hero.className = 'card';
+  hero.innerHTML = '<div class="card-title">Capa da campanha</div>';
+  hero.appendChild(field('Tag','Texto pequeno acima do título','input',{value:deepGet(S.content,'campaigns.hero_tag')}));
+  bindField(hero.lastChild,'campaigns.hero_tag');
+  hero.appendChild(field('Título','','input',{value:deepGet(S.content,'campaigns.hero_title')}));
+  bindField(hero.lastChild,'campaigns.hero_title');
+  hero.appendChild(field('Descrição','','textarea',{value:deepGet(S.content,'campaigns.hero_description'),rows:3}));
+  bindField(hero.lastChild,'campaigns.hero_description');
+  container.appendChild(hero);
+
+  container.appendChild(listEditor(
+    'Texto-base da campanha','Parágrafos que compõem a descrição da campanha',
+    'campaigns.message_paragraphs',
+    {
+      getTitle:(item,i)=>('Parágrafo '+(i+1)),
+      build:(item,i,body,path)=>{
+        const f = field(`Parágrafo ${i+1}`,'','textarea',{value:item||'',rows:3});
+        bindField(f,`${path}[${i}]`);
+        body.appendChild(f);
+      }
+    },
+    'Texto do parágrafo...','Adicionar parágrafo'
+  ));
+
+  container.appendChild(listEditor(
+    'Passos de ação','Etapas numeradas que orientam o usuário',
+    'campaigns.action_steps',
+    {
+      getTitle:(item,i)=>(item.number||(i+1)+'')+' '+(item.text?item.text.substring(0,30):''),
+      build:(item,i,body,path)=>{
+        const f1 = field('Número','','input',{value:item.number||`${i+1}.`});
+        bindField(f1,`path+'['+i+'].number`);
+        body.appendChild(f1);
+        const f2 = field('Texto do passo','','input',{value:item.text||''});
+        bindField(f2,`path+'['+i+'].text`);
+        body.appendChild(f2);
+      }
+    },
+    {number:'',text:''},'Adicionar passo'
+  ));
+
+  const template = document.createElement('div');
+  template.className = 'card';
+  template.innerHTML = '<div class="card-title">Minuta de email</div>';
+  template.appendChild(field('Rótulo','Texto acima do título da minuta','input',{value:deepGet(S.content,'campaigns.template_label')}));
+  bindField(template.lastChild,'campaigns.template_label');
+  template.appendChild(field('Título da minuta','','input',{value:deepGet(S.content,'campaigns.template_title')}));
+  bindField(template.lastChild,'campaigns.template_title');
+  template.appendChild(field('Texto completo da minuta','Cole aqui o texto completo do email modelo. Quebras de linha são respeitadas.','textarea',{value:deepGet(S.content,'campaigns.template_text'),rows:12}));
+  bindField(template.lastChild,'campaigns.template_text');
+  container.appendChild(template);
+
+  const depHeader = document.createElement('div');
+  depHeader.className = 'card';
+  depHeader.innerHTML = '<div class="card-title">Seção de Deputados</div>';
+  depHeader.appendChild(field('Rótulo','Texto acima do título','input',{value:deepGet(S.content,'campaigns.deputies_section.label')}));
+  bindField(depHeader.lastChild,'campaigns.deputies_section.label');
+  depHeader.appendChild(field('Título','','input',{value:deepGet(S.content,'campaigns.deputies_section.title')}));
+  bindField(depHeader.lastChild,'campaigns.deputies_section.title');
+  depHeader.appendChild(field('Descrição','','input',{value:deepGet(S.content,'campaigns.deputies_section.description')}));
+  bindField(depHeader.lastChild,'campaigns.deputies_section.description');
+  container.appendChild(depHeader);
+
+  container.appendChild(listEditor(
+    'Lista de deputados','Deputados titulares com nome, partido e email',
+    'campaigns.deputies_section.deputies',
+    {
+      getTitle:(item,i)=>item.name?item.name.substring(0,30)+'...':('Deputado '+(i+1)),
+      build:(item,i,body,path)=>{
+        const row = document.createElement('div');
+        row.className = 'field-row';
+        const f1 = field('Nome completo','','input',{value:item.name||''});
+        bindField(f1,`path+'['+i+'].name`);
+        const f2 = field('Partido / Estado','','input',{value:item.party||''});
+        bindField(f2,`path+'['+i+'].party`);
+        row.appendChild(f1);row.appendChild(f2);
+        body.appendChild(row);
+        const f3 = field('Email','','input',{value:item.email||'',inputType:'email'});
+        bindField(f3,`path+'['+i+'].email`);
+        body.appendChild(f3);
+      }
+    },
+    {name:'',party:'',email:''},'Adicionar deputado'
+  ));
+};
+previews.campaigns = (d)=>{var h='<div style="padding:4px 0"><p style="color:#F39227;font-size:10px;text-transform:uppercase">'+esc(d?.hero_tag||'')+'</p><strong style="font-size:16px">'+esc(d?.hero_title||'')+'</strong><p style="font-size:12px;color:var(--cmsMuted);margin:6px 0">'+esc(d?.hero_description||'').substring(0,120)+'...</p><div style="margin-top:8px;font-size:11px;color:var(--cmsMuted)">'+(d?.message_paragraphs||[]).length+' parágrafos · '+(d?.action_steps||[]).length+' passos · '+(d?.deputies_section?.deputies||[]).length+' deputados</div></div>';return h;};
+
+// ---- RAW JSON ----
+function refreshRawJson(){
+  if(!S.section||!S.content)return;
+  const sec = S.section;
+  const data = deepGet(S.content, sec);
+  $('#rawJson').value = JSON.stringify(typeof data==='object'?data:(S.content[sec]??{}), null, 2);
+}
+
+// ---- EXPORT ----
+async function exportZip(){
+  if(!S.content){toast('Nada para exportar','error');return;}
+  if(typeof JSZip==='undefined'){toast('JSZip não carregado. Verifique sua conexão.','error');return;}
+
+  // Show modal
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `<div class="modal"><h3>Gerando ZIP do projeto...</h3><div class="progress-bar"><div class="fill" id="zipProgress"></div></div><p style="color:var(--cmsMuted);font-size:13px" id="zipStatus">Preparando arquivos...</p></div>`;
+  document.body.appendChild(overlay);
+
+  const fill = overlay.querySelector('#zipProgress');
+  const status = overlay.querySelector('#zipStatus');
+  fill.style.width = '20%';
+
+  const zip = new JSZip();
+  zip.file('data/content.json', JSON.stringify(S.content, null, 2));
+  status.textContent = `Adicionando ${Object.keys(S.assets).length} assets...`;
+  fill.style.width = '50%';
+
+  let count = 0;
+  for(const [path, blob] of Object.entries(S.assets)){
+    const parts = path.split('/');
+    const folder = parts.slice(0,-1).join('/');
+    const name = parts[parts.length-1];
+    if(folder) zip.folder(folder).file(name, blob);
+    else zip.file(name, blob);
+    count++;
+    fill.style.width = (50 + (count/Object.keys(S.assets).length)*30)+'%';
+  }
+
+  status.textContent = 'Compactando...';
+  fill.style.width = '85%';
+
+  const blob = await zip.generateAsync({type:'blob'});
+  fill.style.width = '100%';
+  status.textContent = 'Concluído!';
+
+  setTimeout(()=>{
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'cosmopoliticas-projeto.zip';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    overlay.remove();
+    S.assets = {};
+    updateChips();
+    toast(`ZIP exportado com ${count} assets! Extraia na pasta do projeto.`,'success');
+  },500);
+}
+
+function exportJson(){
+  if(!S.content){toast('Nada para exportar','error');return;}
+  const blob = new Blob([JSON.stringify(S.content,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='content.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
+  toast('JSON exportado!','success');
+}
+
+async function copyJson(){
+  if(!S.content){toast('Nada para copiar','error');return;}
+  try{await navigator.clipboard.writeText(JSON.stringify(S.content,null,2));toast('JSON copiado!','success');}
+  catch{toast('Erro ao copiar','error');}
+}
+
+// ---- AUTO-LOAD ----
+async function tryAutoLoad(){
+  console.log('[CMS] tryAutoLoad starting...');
+  // Try fetch from server first
+  try{
+    console.log('[CMS] Trying fetch data/content.json...');
+    const r = await fetch('data/content.json',{cache:'no-store'});
+    if(r.ok){
+      const data = await r.json();
+      console.log('[CMS] Fetch OK, sections:', Object.keys(data));
+      loadContent(data);
+      toast('Conteúdo do site carregado automaticamente!','success');
+      return;
+    } else {
+      console.log('[CMS] Fetch failed:', r.status);
+    }
+  }catch(e){
+    console.log('[CMS] Fetch error (normal if opening file://):', e.message);
+  }
+  // Try restore draft
+  const draft = localStorage.getItem(STORAGE_KEY);
+  if(draft){
+    try{
+      console.log('[CMS] Restoring draft from localStorage...');
+      loadContent(JSON.parse(draft));
+      toast('Rascunho anterior restaurado','info');
+      return;
+    }catch(e){console.error('[CMS] Draft restore error:',e)}
+  }
+  console.log('[CMS] No content available. Showing welcome screen.');
+  toast('Abra o content.json ou use o exemplo vazio','info');
+}
+
+// ---- EVENT BINDINGS ----
+
+function getEmptyDemo(){
+  return {
+    site:{title:'Meu site',description:'',footer_year_prefix:'',social:{instagram:'',email:''},form:{submit_endpoint:''}},
+    navbar:{brand:'marca',logo:'',links:[]},
+    hero:{logo:'',headline:{prefix:'',word1:'',connector:'',word2:''},subtitle:'',cta_text:'',video:''},
+    quem_somos:{tag:'',title:'',intro_paragraph:'',details_paragraph:'',image:'',quote:{text:'',author:''},stories_title:'',stories:[],pillars:[]},
+    o_que_fazemos:{tag:'',title:'',services:[]},
+    lutas:{tag:'',title:'',subtitle:'',images:[]},
+    galeria:{tag:'',title:'',videos:[],abolition_day:{title:'',subtitle:'',images:[]}},
+    parceiros:{tag:'',title:'',posts:[],stories:[]},
+    contato:{tag:'',title:'',subtitle:'',form:{labels:{name:'',email:'',subject:'',message:''},placeholders:{name:'',email:'',subject:'',message:''},submit_button:''},success:{title:'',subtitle:''},social_label:''},
+    campaigns:{page_title:'',hero_tag:'',hero_title:'',hero_description:'',message_label:'',message_paragraphs:[],action_label:'',action_steps:[],template_label:'',template_title:'',template_text:'',deputies_section:{label:'',title:'',description:'',deputies:[]}}
+  };
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  // Section search
+  $('#sectionSearch').addEventListener('input', updateNav);
+
+  // File input
+  const fileInput = $('#fileInput');
+  if(fileInput){
+    fileInput.addEventListener('change',(e)=>{
+      console.log('[CMS] fileInput change, files:', e.target.files.length);
+      if(e.target.files[0]) loadFromFile(e.target.files[0]);
+    });
+  } else {
+    console.error('[CMS] fileInput not found!');
+  }
+
+  // Drop zone
+  const dz = $('#dropZone');
+  if(dz){
+    dz.addEventListener('click',(e)=>{
+      console.log('[CMS] dropZone clicked');
+      e.preventDefault();
+      if(fileInput) fileInput.click();
+    });
+    dz.addEventListener('dragover',(e)=>{e.preventDefault();dz.classList.add('dragover')});
+    dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
+    dz.addEventListener('drop',(e)=>{
+      e.preventDefault();
+      dz.classList.remove('dragover');
+      console.log('[CMS] File dropped:', e.dataTransfer.files.length);
+      if(e.dataTransfer.files[0]) loadFromFile(e.dataTransfer.files[0]);
+    });
+  } else {
+    console.error('[CMS] dropZone not found!');
+  }
+
+  // Load buttons
+  const btnLoadDemo = $('#btnLoadDemo');
+  const btnLoadDemoEmpty = $('#btnLoadDemoEmpty');
+  if(btnLoadDemo){
+    btnLoadDemo.addEventListener('click',(e)=>{console.log('[CMS] btnLoadDemo clicked');tryAutoLoad();});
+  } else console.error('[CMS] btnLoadDemo not found!');
+  if(btnLoadDemoEmpty){
+    btnLoadDemoEmpty.addEventListener('click',(e)=>{console.log('[CMS] btnLoadDemoEmpty clicked');loadContent(getEmptyDemo());});
+
+  } else console.error('[CMS] btnLoadDemoEmpty not found!');
+
+  // Export buttons
+  $('#btnExportZip').addEventListener('click', exportZip);
+  $('#btnExportJson').addEventListener('click', exportJson);
+  $('#btnCopyJson').addEventListener('click', copyJson);
+  $('#btnRestore').addEventListener('click',()=>{
+    const d = localStorage.getItem(STORAGE_KEY);
+    if(d){try{loadContent(JSON.parse(d));toast('Rascunho restaurado','success')}catch{toast('Rascunho corrompido','error')}}
+    else toast('Nenhum rascunho salvo','info');
+  });
+
+  // Toolbar
+  $('#btnSaveNow').addEventListener('click', saveNow);
+  $('#btnUndo').addEventListener('click', undo);
+  $('#btnResetSection').addEventListener('click',()=>{
+    if(!S.section||!S.original)return;
+    if(!confirm(`Resetar "${S.section}" para o original?`))return;
+    S.content[S.section] = clone(S.original[S.section]);
+    pushHistory();
+    renderCurrentSection();
+    S.dirtyPaths.delete(S.section);
+    updateNav();updateChips();updatePreview();
+    toast('Seção resetada','info');
+  });
+
+  // Tabs
+  $$('.tab[data-tab]').forEach(t=>{
+    t.addEventListener('click',()=>{
+      $$('.tab[data-tab]').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      const tab = t.dataset.tab;
+      S.currentTab = tab;
+      $('#editorContent').classList.toggle('hidden',tab!=='visual');
+      $('#rawPanel').classList.toggle('hidden',tab!=='raw');
+      if(tab==='raw')refreshRawJson();
+      if(tab==='visual')renderCurrentSection();
+    });
+  });
+
+  // Raw JSON
+  $('#btnApplyRaw').addEventListener('click',()=>{
+    try{
+      const d = JSON.parse($('#rawJson').value);
+      S.content[S.section] = d;
+      pushHistory();
+      renderCurrentSection();
+      updatePreview();
+      markDirty(S.section);
+      toast('JSON aplicado!','success');
+    }catch(e){toast('JSON inválido: '+e.message,'error')}
+  });
+  $('#btnRefreshRaw').addEventListener('click', refreshRawJson);
+
+  // Sticky bar scroll effect
+  $('#mainScroll').addEventListener('scroll',(e)=>{
+    $('#stickyBar').classList.toggle('scrolled',e.target.scrollTop>10);
+  });
+
+  // Ctrl+Z
+  document.addEventListener('keydown',(e)=>{
+    if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();undo();}
+  });
+
+  // Init
+  console.log('[CMS] Initializing...');
+  updateNav();
+  tryAutoLoad();
+  console.log('[CMS] Init complete');
+});
+
+// Global error handler
+window.addEventListener('error',(e)=>{
+  console.error('[CMS] GLOBAL ERROR:', e.message, e.filename, e.lineno);
+  toast('Erro interno: '+e.message,'error');
+});
+</script>
+</body>
+</html>
+
