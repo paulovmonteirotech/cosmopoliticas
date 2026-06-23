@@ -388,7 +388,7 @@
     "deputies_section": {
       "label": "titulares da CMADS",
       "title": "Emails dos deputados",
-      "description": "Lista pronta para mobilização. Você pode copiar todos os emails de uma vez ou individualmente.",
+      "description": "Lista pronta para mobilização. Você pode copiar todos os emails de uma vez ou abrir o cliente de email para disparo manual.",
       "deputies": [
         {
           "name": "BRUNO AREVALO GANEM",
